@@ -1,12 +1,10 @@
 import React from "react";
-import Parts from "./Parts";
+import Part from "./Part";
 
-function Content(props) {
+function Content({ name, parts }) {
   return (
     <div>
-      <Parts part={props.part[0].name} exercise={props.part[0].exercises} />
-      <Parts part={props.part[1].name} exercise={props.part[1].exercises} />
-      <Parts part={props.part[2].name} exercise={props.part[2].exercises} />
+      <Part parts={parts} head={name} />
     </div>
   );
 }

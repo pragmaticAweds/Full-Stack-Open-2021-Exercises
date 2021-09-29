@@ -1,10 +1,9 @@
 import React from "react";
 
-function Header(props) {
-  console.log(props);
+function Header({ title }) {
   return (
     <div>
-      <h1>{props.course}</h1>
+      <h1>{title}</h1>
     </div>
   );
 }
