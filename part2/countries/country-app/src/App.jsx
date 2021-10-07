@@ -1,45 +1,46 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [countries, setcountry] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    axios.get("https://restcountries.com/v3.1/all").then((response) => {
+      setcountry(response.data);
+    });
+  }, []);
+
+  let content = search.trim()
+    ? countries.filter((country) => {
+        const {
+          name: { common },
+        } = country;
+        const filterdisplay = common.includes(search);
+        return filterdisplay;
+      })
+    : [];
+
+  console.log({ content });
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <div>
+        find countries{" "}
+        <input type="text" onChange={(e) => setSearch(e.target.value)} />
+      </div>
+      <div className="content">
+        {content.length > 10 && <p>Too many matches, specify another filter</p>}
+        {content.length < 10 &&
+          content.map((display, displayIndex) => {
+            return (
+              <p key={`country-filtered-index${displayIndex}`}>
+                {display.name.common}
+              </p>
+            );
+          })}
+      </div>
     </div>
-  )
+  );
 }
-
-export default App
+export default App;
