@@ -16,7 +16,7 @@ function App() {
         const {
           name: { common },
         } = country;
-        const filterdisplay = common.includes(search);
+        const filterdisplay = common.toLowerCase().includes(search);
         return filterdisplay;
       })
     : [];
@@ -37,6 +37,17 @@ function App() {
               <p key={`country-filtered-index${displayIndex}`}>
                 {display.name.common}
               </p>
+            );
+          })}
+        {content.length === 1 &&
+          content.map((display, displayIndex) => {
+            return (
+              <div>
+                <h1 key={`country-filtered-index${display.name.official}`}>
+                  {display.name.common}
+                </h1>
+                <img src={display.flags.svg} alt="" />
+              </div>
             );
           })}
       </div>
