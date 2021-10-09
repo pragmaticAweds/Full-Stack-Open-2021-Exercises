@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import CountryDisplay from "./components/CountryDisplay";
+import OneCountry from "./components/OneCountry";
 
 function App() {
   const [countries, setcountry] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState({
+    state: false,
+    data: {},
+  });
+
+  const handleDisplay = (countryData) => {
+    setSelectedCountry({ state: true, data: countryData });
+  };
 
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all").then((response) => {
@@ -11,7 +21,7 @@ function App() {
     });
   }, []);
 
-  let content = search.trim()
+  let searchQuery = search.trim()
     ? countries.filter((country) => {
         const {
           name: { common },
@@ -21,35 +31,29 @@ function App() {
       })
     : [];
 
-  console.log({ content });
+  console.log({ searchQuery });
 
   return (
     <div className="App">
       <div>
         find countries{" "}
-        <input type="text" onChange={(e) => setSearch(e.target.value)} />
+        <input
+          type="text"
+          onChange={(e) => {
+            if (selectedCountry.state)
+              console.log("selected country true:", selectedCountry.state);
+            setSelectedCountry({ ...selectedCountry, state: false });
+            setSearch(e.target.value);
+            console.log("selected country false:", selectedCountry.state);
+          }}
+        />
       </div>
       <div className="content">
-        {content.length > 10 && <p>Too many matches, specify another filter</p>}
-        {content.length < 10 &&
-          content.map((display, displayIndex) => {
-            return (
-              <p key={`country-filtered-index${displayIndex}`}>
-                {display.name.common}
-              </p>
-            );
-          })}
-        {content.length === 1 &&
-          content.map((display, displayIndex) => {
-            return (
-              <div>
-                <h1 key={`country-filtered-index${display.name.official}`}>
-                  {display.name.common}
-                </h1>
-                <img src={display.flags.svg} alt="" />
-              </div>
-            );
-          })}
+        {selectedCountry.state ? (
+          <OneCountry countryData={selectedCountry.data} />
+        ) : (
+          <CountryDisplay content={searchQuery} handleDisplay={handleDisplay} />
+        )}
       </div>
     </div>
   );
