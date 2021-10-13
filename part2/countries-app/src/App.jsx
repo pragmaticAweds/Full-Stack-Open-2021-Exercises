@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Country from "./components/Country";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [weather, setWeather] = useState({});
   const [query, setQuery] = useState("");
+  const [country, setcountry] = useState({
+    toggle: false,
+    data: {},
+  });
 
   useEffect(() => {
     axios("https://restcountries.com/v3.1/all")
@@ -13,22 +18,14 @@ function App() {
   }, []);
 
   const getWeather = ({ name: { common } }) => {
-    axios("http://api.weatherstack.com/current", {
-      params: {
-        query: common,
-        access_key: "5387861e6aa81b179334b5fd5bc2ff73",
-      },
-    })
+    axios(
+      `http://api.weatherstack.com/current?query=${common}&access_key=26e834681363492ae04791fa10f8b6b8`
+    )
       .then(({ data }) => {
-        console.log({ ww: data });
         setWeather(data.current ? data.current : {});
       })
       .catch((err) => console.log(err));
   };
-
-  //console.log(getWeather);
-
-  // console.log(weather("Nigeria"));
 
   const filteredCountry = query
     ? countries.filter((country) =>
@@ -37,46 +34,52 @@ function App() {
     : countries;
 
   useEffect(() => {
-    console.log("called");
     if (filteredCountry.length === 1) {
       getWeather(filteredCountry[0]);
     }
+    return;
+    console.log("called");
   }, [query]);
 
-  //console.log(filteredCountry);
+  useEffect(() => {
+    if (country.toggle === true) {
+      getWeather(country.data);
+    }
+    return;
+  }, [country.toggle]);
 
   const output = !query ? (
     ""
-  ) : filteredCountry.length > 10 ? (
-    <p>be specific</p>
   ) : filteredCountry.length === 1 ? (
-    (() => {
-      // weather(filteredCountry[0].name.common);
-    },
-    console.log(filteredCountry[0]),
-    (
-      <div key={filteredCountry[0].flag}>
-        <h1>{filteredCountry[0].name.common}</h1>
-        <p>Capital: {filteredCountry[0].capital}</p>
-        <p>Population: {filteredCountry[0].population}</p>
-        <img src={filteredCountry[0].flags.png} alt="flag" />
-        <ul>
-          {Object.values(filteredCountry[0].languages).map(
-            (language, langIndex) => (
-              <li key={langIndex}>{language}</li>
-            )
-          )}
-        </ul>
-        <p>Temperature {filteredCountry[0].temperature}</p>
-      </div>
-    ))
+    <div key={filteredCountry[0].flag}>
+      <h1>{filteredCountry[0].name.common}</h1>
+      <p>Capital: {filteredCountry[0].capital}</p>
+      <p>Population: {filteredCountry[0].population}</p>
+      <img src={filteredCountry[0].flags.png} alt="flag" />
+      <ul>
+        {Object.values(filteredCountry[0].languages).map(
+          (language, langIndex) => (
+            <li key={langIndex}>{language}</li>
+          )
+        )}
+      </ul>
+      <p>
+        <b>Temperature:</b> {weather.temperature} Celcius
+      </p>
+      <img src={weather.weather_icons} alt="" />
+      <p>
+        <b>Wind:</b> {weather.wind_speed} mph direction {weather.wind_dir}
+      </p>
+    </div>
+  ) : filteredCountry.length > 10 ? (
+    <p>Too many search, specify with another filter</p>
   ) : (
-    filteredCountry.map(({ name: { common } }) => (
-      <div key={common}>
-        <span>{common}</span>{" "}
+    filteredCountry.map((country) => (
+      <div key={country.flag}>
+        <span>{country.name.common}</span>{" "}
         <button
           onClick={() => {
-            weather(common);
+            setcountry({ toggle: true, data: country });
           }}
         >
           {" "}
@@ -95,10 +98,17 @@ function App() {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value.trim());
+            setcountry({ toggle: false });
           }}
         />
       </form>
-      <div>{output}</div>
+      <div>
+        {country.toggle ? (
+          <Country country={country.data} weather={weather} />
+        ) : (
+          output
+        )}
+      </div>
     </div>
   );
 }
