@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./Services/persons";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -11,12 +12,14 @@ function App() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log(response.data);
-      setPersons(response.data);
-    });
+    if (persons.length !== 0) {
+      personService.getDatas().then((response) => {
+        setPersons(response);
+      });
+    }
   }, []);
+
+  console.log(persons);
 
   const addperson = (event) => {
     event.preventDefault();
@@ -38,35 +41,31 @@ function App() {
     setNewNumber("");
   };
 
-  const addname = (event) => {
-    setNewName(event.target.value);
-  };
-
-  const addnumber = (e) => {
-    setNewNumber(e.target.value);
-  };
-
-  const searchKey = (e) => {
-    setSearch(e.target.value);
-  };
-
   const filterDisplay = persons.filter((person) =>
     person.name.toLowerCase().includes(search)
   );
 
-  console.log(filterDisplay);
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter value={search} keyvalue={searchKey} />
+      <Filter
+        value={search}
+        keyvalue={(e) => {
+          setSearch(e.target.value);
+        }}
+      />
 
       <h3>add a new</h3>
       <PersonForm
         submit={addperson}
         value1={newName}
         value2={newNumber}
-        keychange1={addname}
-        keychange2={addnumber}
+        keychange1={(e) => {
+          setNewName(e.target.value);
+        }}
+        keychange2={(e) => {
+          setNewNumber(e.target.value);
+        }}
       />
 
       <h3>Numbers</h3>
