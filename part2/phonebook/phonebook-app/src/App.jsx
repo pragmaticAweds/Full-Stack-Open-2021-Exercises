@@ -12,14 +12,8 @@ function App() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (persons.length !== 0) {
-      personService.getDatas().then((response) => {
-        setPersons(response);
-      });
-    }
+    personService.getDatas().then((res) => setPersons(res));
   }, []);
-
-  console.log(persons);
 
   const addperson = (event) => {
     event.preventDefault();
@@ -29,16 +23,23 @@ function App() {
       number: Number(newNumber),
     };
 
-    if (persons.find((person) => person.name === newName)) {
+    if (
+      persons.find(
+        (person) => person.name.toLowerCase() === newName.toLowerCase()
+      )
+    ) {
       alert(`${newName} is already added to phonebook`);
       setNewName("");
       setNewNumber("");
       return;
+    } else {
+      personService.create(newperson).then((res) => {
+        setPersons(persons.concat(res));
+        console.log(res);
+        setNewName("");
+        setNewNumber("");
+      });
     }
-
-    setPersons(persons.concat(newperson));
-    setNewName("");
-    setNewNumber("");
   };
 
   const filterDisplay = persons.filter((person) =>
@@ -61,10 +62,10 @@ function App() {
         value1={newName}
         value2={newNumber}
         keychange1={(e) => {
-          setNewName(e.target.value);
+          setNewName(e.target.value.trim());
         }}
         keychange2={(e) => {
-          setNewNumber(e.target.value);
+          setNewNumber(e.target.value.trim());
         }}
       />
 
