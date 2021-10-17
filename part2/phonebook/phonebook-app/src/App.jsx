@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
-import Persons from "./components/Persons";
 import personService from "./Services/persons";
+import Button from "./components/Button";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -14,6 +14,23 @@ function App() {
   useEffect(() => {
     personService.getDatas().then((res) => setPersons(res));
   }, []);
+
+  const updateNo = (id) => {
+    const person = persons.find(
+      (person) => person.name.toLowerCase() === id.name.toLowerCase()
+    );
+    console.log({ person });
+    const changedNo = { ...person, number: id.number };
+    personService
+      .update(person.id, changedNo)
+      .then((res) =>
+        setPersons(
+          persons.map((person) =>
+            person.name.toLowerCase() === id.name ? person : res
+          )
+        )
+      );
+  };
 
   const addperson = (event) => {
     event.preventDefault();
@@ -28,7 +45,10 @@ function App() {
         (person) => person.name.toLowerCase() === newName.toLowerCase()
       )
     ) {
-      alert(`${newName} is already added to phonebook`);
+      window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one` &&
+          updateNo(newperson)
+      );
       setNewName("");
       setNewNumber("");
       return;
@@ -42,9 +62,27 @@ function App() {
     }
   };
 
+  const Delete = (id) =>
+    personService
+      .deleteData(id)
+      .then((res) => setPersons(persons.filter((p) => p.id !== id)));
+
   const filterDisplay = persons.filter((person) =>
     person.name.toLowerCase().includes(search)
   );
+
+  const displayName = filterDisplay.map((person, personindex) => (
+    <li key={person.id}>
+      {person.name} {person.number}{" "}
+      <Button
+        onclick={() => {
+          {
+            window.confirm(`Delete ${person.name}`) && Delete(person.id);
+          }
+        }}
+      />
+    </li>
+  ));
 
   return (
     <div>
@@ -70,7 +108,7 @@ function App() {
       />
 
       <h3>Numbers</h3>
-      <Persons items={filterDisplay} />
+      <ul>{displayName}</ul>
     </div>
   );
 }
