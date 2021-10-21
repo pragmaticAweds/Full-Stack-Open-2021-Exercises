@@ -3,12 +3,16 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personService from "./Services/persons";
 import Persons from "./components/Persons";
+import Notififier from "./components/Notififier";
+import Errormsg from "./components/Errormsg";
+import "./index.css";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+  const [msg, Setmsg] = useState({ success: "", error: "" });
 
   useEffect(() => {
     personService.getDatas().then((res) => setPersons(res));
@@ -25,7 +29,13 @@ function App() {
         );
       })
       .catch((err) => {
-        alert(`the person '${changedNo.name}' was deleted from server`);
+        Setmsg({
+          ...msg,
+          error: `Information of '${changedNo.name.toUpperCase()}' has already been removed from the server`,
+        });
+        setTimeout(() => {
+          Setmsg({ ...msg, error: null });
+        }, 4000);
         setPersons(persons.filter((person) => person.id !== pers.id));
       });
   };
@@ -51,6 +61,10 @@ function App() {
     } else {
       personService.create(newperson).then((res) => {
         setPersons(persons.concat(res));
+        Setmsg({ ...msg, success: `Added ${res.name.toUpperCase()}` });
+        setTimeout(() => {
+          Setmsg({ ...msg, success: null });
+        }, 4000);
         setNewName("");
         setNewNumber("");
       });
@@ -64,6 +78,12 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      {msg.success !== "" ? (
+        <Notififier message={msg.success} />
+      ) : msg.error !== "" ? (
+        <Errormsg error={msg.error} />
+      ) : null}
+
       <Filter
         value={search}
         keyvalue={(e) => {
