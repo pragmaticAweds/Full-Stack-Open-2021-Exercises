@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "server": "json-server -p3001 --watch persons.json"
+    "server": "json-server -p3001 --watch db.json"
   },
   "dependencies": {
     "axios": "^0.22.0",
