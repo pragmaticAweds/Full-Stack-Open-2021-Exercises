@@ -16,10 +16,10 @@ function App() {
       .then(({ data }) => setCountries(data))
       .catch(console.error);
   }, []);
-
+  const api_key = process.env.REACT_APP_API_KEY;
   const getWeather = ({ name: { common } }) => {
     axios(
-      `http://api.weatherstack.com/current?query=${common}&access_key=26e834681363492ae04791fa10f8b6b8`
+      `http://api.weatherstack.com/current?query=${common}&access_key=${api_key}`
     )
       .then(({ data }) => {
         setWeather(data.current ? data.current : {});

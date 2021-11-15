@@ -59,15 +59,24 @@ function App() {
       setNewNumber("");
       return;
     } else {
-      personService.create(newperson).then((res) => {
-        setPersons(persons.concat(res));
-        Setmsg({ ...msg, success: `Added ${res.name.toUpperCase()}` });
-        setTimeout(() => {
-          Setmsg({ ...msg, success: null });
-        }, 4000);
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(newperson)
+        .then((res) => {
+          setPersons(persons.concat(res));
+          Setmsg({ ...msg, success: `Added ${res.name.toUpperCase()}` });
+          setTimeout(() => {
+            Setmsg({ ...msg, success: null });
+          }, 4000);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((err) => {
+          console.log(err.response.data.error);
+          Setmsg({ ...msg, error: err.response.data.error });
+          setTimeout(() => {
+            Setmsg({ ...msg, error: null });
+          }, 4000);
+        });
     }
   };
 

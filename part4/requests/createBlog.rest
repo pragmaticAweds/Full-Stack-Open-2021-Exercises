@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Alayande",
+    "author": "Alawe",
+    "url": "inogotoskul.com",
+    "likes": 0
+}
