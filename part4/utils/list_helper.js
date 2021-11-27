@@ -46,12 +46,6 @@ const mostlikes = (blog) => {
   return obj;
 };
 
-// const favoriteBlog = (blogs) => {
-//   const result = blogs.map(({ likes }) => likes);
-//   const favblog = result.reduce((max, cur) => Math.max(max, cur), result[0]);
-//   return favblog;
-// };
-
 module.exports = {
   dummy,
   totalLikes,
