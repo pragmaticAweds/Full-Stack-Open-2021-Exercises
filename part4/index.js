@@ -8,9 +8,42 @@ app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);
 });
 
-// const fetch = async () => {
-//   const res = await api.get("/api/blogs");
-//   console.log(res.body);
+// const newobj = [
+//   {
+//     ada: "moyak",
+
+//     likes: 10,
+//   },
+//   {
+//     ada: "myak",
+
+//     // likes: 12,
+//   },
+//   {
+//     ada: "moak",
+
+//     likes: 10,
+//   },
+//   {
+//     ada: "moyak",
+//     likes: 3,
+//   },
+// ];
+
+// const objmap = newobj.map((obj) => {
+//   if (obj.likes === undefined) return { ...obj, likes: 0 };
+
+//   return obj;
+// });
+
+// console.log(objmap);
+
+// const defaultLikes = (obj) =>
+//   !obj.hasOwnProperty("likes") ? { ...obj, likes: 0 } : obj;
+
+// const newLikes = {
+//   ada: "moyak",
+//   likes: 6,
 // };
 
-// fetch();
+// console.log(defaultLikes(newLikes));

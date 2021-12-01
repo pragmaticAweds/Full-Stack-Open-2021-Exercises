@@ -6,8 +6,7 @@ POST http://localhost:5001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Alade",
-    "author": "Alape",
+   
     "url": "inogotoskul.com",
     "likes": 0
 }
