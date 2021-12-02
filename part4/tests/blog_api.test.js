@@ -61,6 +61,34 @@ test("verify new blog is posted successfully", async () => {
   expect(contents).toContain("Canonical reduction");
 });
 
+test("finding a specific blog", async () => {
+  const localDb = await helper.blogsInDb();
+  const localblog = localDb[0];
+
+  const specificId = await api
+    .get(`/api/blogs/${localblog.id}`)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const processedBLog = JSON.parse(JSON.stringify(localblog));
+  expect(specificId.body).toEqual(processedBLog);
+});
+
+test("testing delete functionality", async () => {
+  const localDb = await helper.blogsInDb();
+  const blogToBeDeleted = localDb[0];
+
+  await api.delete(`/api/blogs/${blogToBeDeleted.id}`).expect(204);
+
+  const lastBlog = await helper.blogsInDb();
+
+  expect(lastBlog).toHaveLength(helper.blogs.length - 1);
+
+  const title = lastBlog.map((blog) => blog.title);
+
+  expect(title).not.toContain(blogToBeDeleted.title);
+});
+
 test("check if an obj has zero", async () => {
   const newBlog = {
     title: "Canonical reduction",

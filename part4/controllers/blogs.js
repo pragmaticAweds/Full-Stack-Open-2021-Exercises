@@ -1,4 +1,3 @@
-require("express-async-errors");
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blogmodel");
 
@@ -24,17 +23,24 @@ blogsRouter.post("/", async (req, res) => {
 });
 
 blogsRouter.delete("/:id", async (req, res) => {
-  const deleted = await Blog.findByIdAndRemove(req.params.id);
+  await Blog.findByIdAndRemove(req.params.id);
   res.status(204).end();
 });
 
-blogsRouter.put("/:id", async (req, res) => {
-  const blog = new Blog(req.body);
+blogsRouter.put("/:id", (req, res, next) => {
+  const blog = { ...req.body, likes: req.body.likes };
 
-  const updated = await Blog.findByIdAndUpdate(req.params.id, blog, {
-    new: true,
-  });
-  res.json(update);
+  // const blog = {
+  //   likes: body.likes,
+  // };
+
+  try {
+    Blog.findByIdAndUpdate(req.params.id, blog, {
+      new: true,
+    }).then((update) => res.json(update));
+  } catch (exception) {
+    next(exception);
+  }
 });
 
 module.exports = blogsRouter;

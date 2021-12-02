@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const logger = require("../utils/logger");
 
 const blogSchema = new mongoose.Schema({
-  title: { type: String },
-  author: { type: String },
+  title: { type: String, required: true },
+  author: { type: String, required: true },
   url: { type: String, required: true },
   likes: { type: Number, required: true },
 });

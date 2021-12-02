@@ -26,4 +26,9 @@ const nonExistingLikes = async () => {
   });
 };
 
-module.exports = { blogs, nonExistingLikes, defaultLikes };
+const blogsInDb = async () => {
+  const newBlogs = await Blog.find({});
+  return newBlogs.map((blog) => blog.toJSON());
+};
+
+module.exports = { blogs, nonExistingLikes, defaultLikes, blogsInDb };

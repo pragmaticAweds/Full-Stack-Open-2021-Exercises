@@ -6,7 +6,23 @@ POST http://localhost:5001/api/blogs
 Content-Type: application/json
 
 {
-   
     "url": "inogotoskul.com",
     "likes": 0
 }
+
+###
+
+PUT http://localhost:5001/api/blogs/619248f92210d5f2d7826948
+Content-Type: application/json
+
+ {
+   "title": "iyanda",
+  "author": "Alaweda",
+  "url": "igotoskul.com",
+  "likes": 9,
+  "id": "619248f92210d5f2d7826948"
+}
+
+###
+
+DELETE http://localhost:5001/api/blogs/619248f92210d5f2d7826948
