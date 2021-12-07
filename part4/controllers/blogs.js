@@ -1,5 +1,7 @@
 const blogsRouter = require("express").Router();
+const { response } = require("express");
 const Blog = require("../models/blogmodel");
+const User = require("../models/user");
 
 blogsRouter.get("/", async (req, res) => {
   const blogs = await Blog.find({});
@@ -12,14 +14,26 @@ blogsRouter.get("/:id", async (req, res) => {
 });
 
 blogsRouter.post("/", async (req, res) => {
-  const blog = new Blog(req.body);
+  const body = req.body;
 
-  if (!blog.title && !blog.author) {
-    return res.status(400).end();
-  } else {
-    const savedBlog = await blog.save();
-    return res.status(201).json(savedBlog);
-  }
+  const user = await User.findById(body.userId);
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: user._id,
+  });
+
+  // if (!blog.title && !blog.author) {
+  //   return res.status(400).end();
+  // }
+
+  const savedBlog = await blog.save();
+  user.blogs = user.blogs.concat(savedBlog._id);
+  await user.save();
+  res.status(201).json(savedBlog);
 });
 
 blogsRouter.delete("/:id", async (req, res) => {
@@ -27,20 +41,22 @@ blogsRouter.delete("/:id", async (req, res) => {
   res.status(204).end();
 });
 
-blogsRouter.put("/:id", (req, res, next) => {
+blogsRouter.put("/:id", async (req, res) => {
   const blog = { ...req.body, likes: req.body.likes };
 
   // const blog = {
   //   likes: body.likes,
   // };
+  const update = await Blog.findByIdAndUpdate(req.params.id, blog, {
+    new: true,
+  });
 
-  try {
-    Blog.findByIdAndUpdate(req.params.id, blog, {
-      new: true,
-    }).then((update) => res.json(update));
-  } catch (exception) {
-    next(exception);
-  }
+  res.json(update);
+
+  //   }).then((update) => res.json(update));
+  // } catch (exception) {
+  //   next(exception);
+  // }
 });
 
 module.exports = blogsRouter;

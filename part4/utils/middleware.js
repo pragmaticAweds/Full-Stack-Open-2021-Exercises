@@ -1,5 +1,5 @@
-const logger = require("./logger");
 const morgan = require("morgan");
+const logger = require("./logger");
 
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 
@@ -10,7 +10,7 @@ const morganMiddleware = morgan(
 const unknownEndpoint = (req, res) =>
   res.status(404).send({ error: "unknown endpoint" });
 
-const errorHandler = (error, req, res) => {
+const errorHandler = (error, req, res, next) => {
   console.error(error.message);
   console.log("error handler working");
 

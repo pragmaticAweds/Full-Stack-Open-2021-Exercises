@@ -6,9 +6,12 @@ POST http://localhost:5001/api/blogs
 Content-Type: application/json
 
 {
-    "url": "inogotoskul.com",
-    "likes": 0
-}
+    "title": "First class tests",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    "likes": 10,
+     "userId": "5a422b891b54a676234d17fa"
+  }
 
 ###
 
@@ -24,5 +27,6 @@ Content-Type: application/json
 }
 
 ###
+     
 
-DELETE http://localhost:5001/api/blogs/619248f92210d5f2d7826948
+DELETE http://localhost:5001/api/blogs/619ea312a5ed046dddf21726
