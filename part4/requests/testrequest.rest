@@ -6,8 +6,9 @@ GET http://localhost:5001/api/users
 POST http://localhost:5001/api/users
 Content-Type: application/json
 
-      {
-      "username" : "miyaro",
-      "name": "Aul",
-      "password": "ma"
-      }
+{
+    "blogs": [],
+    "username": "ade",
+    "name": "adekunle",
+    "password": "aweda"
+  }

@@ -7,10 +7,10 @@ Content-Type: application/json
 
 {
     "title": "First class tests",
-    "author": "Robert C. Martin",
+    "author": "Matti Luukkainen",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     "likes": 10,
-     "userId": "5a422b891b54a676234d17fa"
+     "userId": "61e6ae6f4babfa6486f03503"
   }
 
 ###
