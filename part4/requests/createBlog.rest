@@ -4,13 +4,13 @@ GET http://localhost:5001/api/blogs
 
 POST http://localhost:5001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthbWlsYSIsImlkIjoiNjFlODE5NDEzMmZiMzI4ZjFjOWFhODZmIiwiaWF0IjoxNjQyNjE2NjEyLCJleHAiOjE2NDI2MjAyMTJ9.x3QFV-7Sdlyktm-50HFfeO1eWcCk5Hf6xYNPrefQ2hs
 
 {
-    "title": "First class tests",
+    "title": "First classs",
     "author": "Matti Luukkainen",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    "likes": 10,
-     "userId": "61e6ae6f4babfa6486f03503"
+    "likes": 10
   }
 
 ###

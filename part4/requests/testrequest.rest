@@ -8,7 +8,9 @@ Content-Type: application/json
 
 {
     "blogs": [],
-    "username": "ade",
-    "name": "adekunle",
-    "password": "aweda"
+    "username": "kamila",
+    "name": "kamila",
+    "password": "kamilaa"
   }
+
+
