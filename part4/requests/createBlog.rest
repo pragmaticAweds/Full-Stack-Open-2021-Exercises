@@ -4,7 +4,7 @@ GET http://localhost:5001/api/blogs
 
 POST http://localhost:5001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthbWlsYSIsImlkIjoiNjFlODE5NDEzMmZiMzI4ZjFjOWFhODZmIiwiaWF0IjoxNjQyNjE2NjEyLCJleHAiOjE2NDI2MjAyMTJ9.x3QFV-7Sdlyktm-50HFfeO1eWcCk5Hf6xYNPrefQ2hs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2Fzb3phIiwiaWQiOiI2MWY3ZGYzMGM2YTA5OWNlZjVmNzk1YjAiLCJpYXQiOjE2NDM2MzQ0OTQsImV4cCI6MTY0MzYzODA5NH0.c4a9-DXhTRbxvWdoLeullJQUOVXzZBfTGSMRdzsK6Xw
 
 {
     "title": "First classs",
@@ -29,4 +29,5 @@ Content-Type: application/json
 ###
      
 
-DELETE http://localhost:5001/api/blogs/619ea312a5ed046dddf21726
+DELETE http://localhost:5001/api/blogs/61f7a3b953fbf407127858ef
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2Fzb3phIiwiaWQiOiI2MWY2ZmI4YjMxMTA5NzJiZjZkN2RlYzUiLCJpYXQiOjE2NDM2MTg3MzUsImV4cCI6MTY0MzYyMjMzNX0.Lg1jCYKLs7kDrsxVwrmsDAesmoE_DzlJzKQtqG_2sgM

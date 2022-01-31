@@ -11,6 +11,7 @@ const blogRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const middleware = require("./utils/middleware");
 const loginRouter = require("./controllers/login");
+const userExtractor = middleware.userExtractor;
 
 logger.info("connecting to MongoUrl");
 

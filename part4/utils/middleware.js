@@ -1,5 +1,7 @@
 const morgan = require("morgan");
 const logger = require("./logger");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 
@@ -38,9 +40,17 @@ const tokenExtractor = (req, res, next) => {
   next();
 };
 
+const userExtractor = async (req, res, next) => {
+  const user = jwt.verify(req.token, process.env.SECRET);
+  req.user = user.username;
+
+  next();
+};
+
 module.exports = {
   morganMiddleware,
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
+  userExtractor,
 };
