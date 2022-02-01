@@ -12,7 +12,7 @@ const blogs = [
     title: "First classs",
     author: "Matti Luukkainen",
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    likes: 10,
+    likes: 9,
     id: "61f7df5ec6a099cef5f795c5",
   },
 ];

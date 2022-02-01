@@ -21,8 +21,6 @@ blogsRouter.get("/:id", async (req, res) => {
 blogsRouter.post("/", userExtractor, async (req, res) => {
   const body = req.body;
 
-  // console.log({ user: req.user });
-
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
   if (!decodedToken.id) {
@@ -30,7 +28,6 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
   }
 
   const user = await User.findById(decodedToken.id);
-  console.log({ user });
 
   const blog = new Blog({
     title: body.title,

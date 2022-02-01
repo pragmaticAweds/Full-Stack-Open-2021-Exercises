@@ -11,7 +11,6 @@ const blogRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const middleware = require("./utils/middleware");
 const loginRouter = require("./controllers/login");
-const userExtractor = middleware.userExtractor;
 
 logger.info("connecting to MongoUrl");
 
@@ -25,9 +24,8 @@ app.use(express.static("build"));
 app.use(express.json());
 app.use(middleware.morganMiddleware);
 
-app.use(middleware.tokenExtractor);
+app.use("/api/blogs", middleware.tokenExtractor, blogRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/blogs", blogRouter);
 app.use("/api/login", loginRouter);
 
 app.use(middleware.unknownEndpoint);
