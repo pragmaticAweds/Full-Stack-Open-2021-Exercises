@@ -5,7 +5,7 @@ const mongoUrl =
     ? process.env.TEST_MONGODB_URI
     : process.env.MONGODB_URI;
 
-const PORT = process.env.port || 3003;
+const PORT = process.env.port || 5001;
 
 module.exports = {
   mongoUrl,
