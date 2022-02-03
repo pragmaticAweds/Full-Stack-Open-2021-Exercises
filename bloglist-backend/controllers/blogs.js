@@ -33,7 +33,7 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    likes: body.likes ? body.likes : 0,
     user: user._id,
   });
 
