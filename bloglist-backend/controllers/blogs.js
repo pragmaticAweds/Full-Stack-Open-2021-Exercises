@@ -28,7 +28,6 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
   }
 
   const user = await User.findById(decodedToken.id);
-
   const blog = new Blog({
     title: body.title,
     author: body.author,
@@ -62,11 +61,17 @@ blogsRouter.delete("/:id", async (req, res) => {
 });
 
 blogsRouter.put("/:id", async (req, res) => {
-  const blog = { ...req.body, likes: req.body.likes };
+  const updatedblog = new Blog({
+    title: req.body.title,
+    author: req.body.author,
+    url: req.body.url,
+    likes: req.body.likes,
+  });
+
+  const blog = { updatedblog, likes: req.body.likes };
   const update = await Blog.findByIdAndUpdate(req.params.id, blog, {
     new: true,
   });
-
   res.json(update);
 });
 
