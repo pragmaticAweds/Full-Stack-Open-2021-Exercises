@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -8,8 +8,6 @@ import BlogForm from "./components/Blog-Form";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [Msg, setMsg] = useState({ success: "", error: "" });
 
@@ -31,6 +29,7 @@ const App = () => {
   };
 
   const handleBlogSubmit = async (noteObject) => {
+    blogFormRef.current.toggleVisibility();
     try {
       const blog = await blogService.create(noteObject);
       setBlogs([...blogs, blog]);
@@ -46,6 +45,34 @@ const App = () => {
       setTimeout(() => {
         setMsg({ ...Msg, error: "" });
       }, 4000);
+    }
+  };
+
+  const handleBlogLikes = async (id, noteObject) => {
+    try {
+      await blogService.update(id, noteObject);
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : noteObject)));
+      setMsg({
+        ...Msg,
+        success: `blog ${noteObject.title.toUpperCase()} updated successfully`,
+      });
+      setTimeout(() => {
+        setMsg({ ...Msg, success: "" });
+      }, 4000);
+    } catch (err) {
+      setMsg({ ...Msg, error: err.response.data.error });
+      setTimeout(() => {
+        setMsg({ ...Msg, error: "" });
+      }, 4000);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await blogService.deleteObj(id);
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    } catch (err) {
+      console.error({ error: err.message });
     }
   };
 
@@ -67,6 +94,10 @@ const App = () => {
     }
   }, []);
 
+  const sortedData = [].concat(blogs).sort((a, b) => b.likes - a.likes);
+
+  const blogFormRef = useRef();
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -81,16 +112,23 @@ const App = () => {
             {user.name} logged - in{" "}
             <button onClick={handlelLogout}>logout</button>
           </p>
-          <Togglable buttonLabel="Create Blog">
+          <Togglable buttonLabel="Create Blog" ref={blogFormRef}>
             <BlogForm Msg={Msg} createBlog={handleBlogSubmit} />
           </Togglable>
         </div>
       )}
 
       <div>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
+        {sortedData
+          .map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateLike={handleBlogLikes}
+              deleteHandler={handleDelete}
+            />
+          ))
+          .sort()}
       </div>
     </div>
   );
