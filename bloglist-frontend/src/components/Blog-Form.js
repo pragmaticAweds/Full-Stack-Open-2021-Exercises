@@ -34,6 +34,7 @@ const BlogForm = ({ Msg, createBlog }) => {
         <div>
           author:
           <input
+            id="blogInput"
             type="text"
             value={author}
             name="title"

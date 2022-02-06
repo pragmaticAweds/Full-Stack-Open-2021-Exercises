@@ -119,16 +119,14 @@ const App = () => {
       )}
 
       <div>
-        {sortedData
-          .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              updateLike={handleBlogLikes}
-              deleteHandler={handleDelete}
-            />
-          ))
-          .sort()}
+        {sortedData.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            updateLike={handleBlogLikes}
+            deleteHandler={handleDelete}
+          />
+        ))}
       </div>
     </div>
   );
