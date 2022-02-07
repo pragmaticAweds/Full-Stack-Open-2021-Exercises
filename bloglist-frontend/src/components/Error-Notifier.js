@@ -1,7 +1,11 @@
 import React from "react";
 
 const ErrorNotifier = ({ msg }) => {
-  return <p style={styles.notify}>{msg}</p>;
+  return (
+    <p style={styles.notify} className="error">
+      {msg}
+    </p>
+  );
 };
 
 const styles = {
