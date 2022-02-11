@@ -1,29 +1,36 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseVote } from "../reducers/anecdoteReducer";
+import { newVote } from "../reducers/notifierReducer";
 
 const Anecdote = ({ anecdote, handleVote }) => {
   return (
     <div>
       <span>{anecdote.content}</span> <br />
       <span>{anecdote.votes}</span>{" "}
-      <button onClick={() => handleVote(anecdote.id)}>vote</button>
+      <button onClick={() => handleVote(anecdote.id, anecdote.content)}>
+        vote
+      </button>
     </div>
   );
 };
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector((state) =>
+    state.anecdotes.sort((a, b) => b.votes - a.votes)
+  );
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line no-unused-vars
-  const sortedVote = anecdotes.sort((a, b) => b.votes - a.votes);
-
-  const handleClick = (id) => dispatch(increaseVote(id));
+  const handleClick = (id, msg) => {
+    dispatch(increaseVote(id));
+    dispatch(newVote(msg));
+    setTimeout(() => {
+      dispatch(newVote(null));
+    }, 5000);
+  };
 
   return (
     <div>
-      <h2>Anecdotes</h2>
       {anecdotes.map((val) => (
         <Anecdote key={val.id} anecdote={val} handleVote={handleClick} />
       ))}
