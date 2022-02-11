@@ -25,17 +25,23 @@ const Blog = ({ blog, updateLike, deleteHandler }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title}{" "}
-      <button onClick={() => setVisible(!visible)}>
+      {blog.title} {blog.author}
+      <button
+        onClick={() => setVisible(!visible)}
+        className="blogVisible"
+        id="viewblog"
+      >
         {visible ? "hide" : "view"}
       </button>
-      <div style={{ display: visible ? "" : "none" }}>
+      <div style={{ display: visible ? "" : "none" }} className="blog">
         <span>{blog.url}</span> <br />
         <span>
-          likes {blog.likes} <button onClick={handleLikes}>like</button>
+          likes {blog.likes}{" "}
+          <button onClick={handleLikes} id="likebtn">
+            like
+          </button>
         </span>
         <br />
-        <span>{blog.author}</span> <br />
         <button onClick={handleDelete}>remove</button>
       </div>
     </div>
