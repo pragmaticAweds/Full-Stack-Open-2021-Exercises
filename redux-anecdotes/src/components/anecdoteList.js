@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { increaseVote } from "../reducers/anecdoteReducer";
 import { newVote } from "../reducers/notifierReducer";
 
@@ -22,9 +23,10 @@ const AnecdoteList = () => {
       : state.anecdotes.filter(({ content }) =>
           content.toLowerCase().includes(state.filterkey.toLowerCase())
         );
-
-    return anecdoteState.sort((a, b) => b.votes - a.votes);
+    return anecdoteState;
   });
+
+  const sorted = [...anecdotes].sort((a, b) => b.votes - a.votes);
   const dispatch = useDispatch();
 
   const handleClick = (id, msg) => {
@@ -37,7 +39,7 @@ const AnecdoteList = () => {
 
   return (
     <div>
-      {anecdotes.map((val) => (
+      {sorted.map((val) => (
         <Anecdote key={val.id} anecdote={val} handleVote={handleClick} />
       ))}
     </div>

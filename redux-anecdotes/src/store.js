@@ -1,15 +1,15 @@
-import { createStore, combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+
 import AnecdoteReducer from "./reducers/anecdoteReducer";
-import { composeWithDevTools } from "redux-devtools-extension";
 import notificationReducer from "./reducers/notifierReducer";
 import filterReducer from "./reducers/filterReducer";
 
-const reducer = combineReducers({
-  anecdotes: AnecdoteReducer,
-  notifier: notificationReducer,
-  filterkey: filterReducer,
+const store = configureStore({
+  reducer: {
+    anecdotes: AnecdoteReducer,
+    notifier: notificationReducer,
+    filterkey: filterReducer,
+  },
 });
-
-const store = createStore(reducer, composeWithDevTools());
 
 export default store;
