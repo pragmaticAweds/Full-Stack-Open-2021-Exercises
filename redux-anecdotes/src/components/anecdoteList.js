@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { increaseVote } from "../reducers/anecdoteReducer";
+import { voteIncrease } from "../reducers/anecdoteReducer";
 import { newVote } from "../reducers/notifierReducer";
 
 const Anecdote = ({ anecdote, handleVote }) => {
@@ -9,7 +9,7 @@ const Anecdote = ({ anecdote, handleVote }) => {
     <div>
       <span>{anecdote.content}</span> <br />
       <span>{anecdote.votes}</span>{" "}
-      <button onClick={() => handleVote(anecdote.id, anecdote.content)}>
+      <button onClick={() => handleVote(anecdote, anecdote.content)}>
         vote
       </button>
     </div>
@@ -27,14 +27,12 @@ const AnecdoteList = () => {
   });
 
   const sorted = [...anecdotes].sort((a, b) => b.votes - a.votes);
+
   const dispatch = useDispatch();
 
-  const handleClick = (id, msg) => {
-    dispatch(increaseVote(id));
-    dispatch(newVote(msg));
-    setTimeout(() => {
-      dispatch(newVote(null));
-    }, 5000);
+  const handleClick = (obj, msg) => {
+    dispatch(voteIncrease(obj));
+    dispatch(newVote(msg, 1));
   };
 
   return (
