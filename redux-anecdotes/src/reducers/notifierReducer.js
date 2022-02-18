@@ -38,9 +38,9 @@ export const newVote = (msg, time) => {
   return async (dispatch) => {
     const vote = msg === null ? null : `you voted '${msg}'`;
     dispatch(setNotification(vote));
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       dispatch(setNotification(null));
-    }, Number(`${time}000`));
+    }, time * 1000);
   };
 };
 

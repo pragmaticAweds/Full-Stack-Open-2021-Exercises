@@ -32,7 +32,7 @@ const AnecdoteList = () => {
 
   const handleClick = (obj, msg) => {
     dispatch(voteIncrease(obj));
-    dispatch(newVote(msg, 1));
+    dispatch(newVote(msg, 3));
   };
 
   return (
