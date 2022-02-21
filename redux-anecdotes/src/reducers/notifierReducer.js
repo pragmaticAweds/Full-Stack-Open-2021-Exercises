@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const notificationSlice = createSlice({
   name: "notifier",
-  initialState: null,
+  initialState: "",
   reducers: {
     setNotification(state, action) {
       return action.payload;
@@ -10,7 +10,7 @@ const notificationSlice = createSlice({
   },
 });
 
-const notificationReducer = (state = null, action) => {
+const notificationReducer = (state = "", action) => {
   switch (action.type) {
     case "VOTE":
       return action.vote;
@@ -24,23 +24,39 @@ const notificationReducer = (state = null, action) => {
 
 export const { setNotification } = notificationSlice.actions;
 
+export const clearNotification = () => {
+  return async (dispatch) => {
+    dispatch(setNotification(""));
+  };
+};
+
 export const newNotification = (msg) => {
   return async (dispatch) => {
-    const newNotification = msg === null ? null : `new anecdote '${msg}'`;
+    const newNotification = msg === "" ? "" : `new anecdote '${msg}'`;
     dispatch(setNotification(newNotification));
     setTimeout(() => {
-      dispatch(setNotification(null));
+      dispatch(setNotification(""));
     }, 5000);
   };
 };
 
 export const newVote = (msg, time) => {
   return async (dispatch) => {
-    const vote = msg === null ? null : `you voted '${msg}'`;
+    if (msg === "") {
+      return;
+    }
+    let vote = `you voted '${msg}'`;
     dispatch(setNotification(vote));
-    const timeout = setTimeout(() => {
-      dispatch(setNotification(null));
+    let timeout = setTimeout(() => {
+      dispatch(clearNotification());
     }, time * 1000);
+    if (vote !== msg) {
+      clearTimeout(timeout);
+      dispatch(setNotification(`you voted '${msg}'`));
+      setTimeout(() => {
+        dispatch(clearNotification());
+      }, time * 1000);
+    }
   };
 };
 
