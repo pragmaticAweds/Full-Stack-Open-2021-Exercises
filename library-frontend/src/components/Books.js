@@ -1,17 +1,11 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
-const ALL_BOOKS = gql`
-  query {
-    allBooks {
-      title
-      author
-      published
-    }
-  }
-`;
+import { ALL_BOOKS } from "../query";
 
 const Books = (props) => {
-  const { loading, data } = useQuery(ALL_BOOKS);
+  const { loading, data } = useQuery(ALL_BOOKS, {
+    pollInterval: 2000,
+  });
 
   if (!props.show) {
     return null;
