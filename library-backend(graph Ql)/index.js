@@ -6,43 +6,50 @@ const { v1: uuid } = require("uuid");
 const { URI } = require("./utils/config");
 
 let { authors, books } = require("./data");
+const Book = require("./model/book.model");
+const Author = require("./model/author.model");
+
 const { typeDefs } = require("./type-defs");
-/*
- * English:
- * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
- * However, for simplicity, we will store the author's name in connection with the book
- */
+
+mongoose
+  .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("connected to mongoose successfully");
+  })
+  .catch((err) => {
+    console.log("error connecting to mongodb", err.message);
+  });
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allAuthors: () => authors,
-    allBooks: (root, args) => {
-      if (args.author) {
-        return books.filter((book) => book.author === args.author);
-      }
+    bookCount: async () => Book.collection.countDocuments(),
+    authorCount: async () => Author.collection.countDocuments(),
+    allAuthors: async () => Author.find({}),
+    allBooks: async (root, args) => {
+      return Book.find({});
 
-      if (args.genre) {
-        return books.filter((book) => book.genres.includes(args.genre));
-      }
-
-      if (args.author && args.genre) {
-        return books.filter(
-          (book) =>
-            book.genres.includes(args.genre) && book.author === args.author
-        );
-      }
-      return books;
+      // if (args.author) {
+      //   return books.filter((book) => book.author === args.author);
+      // }
+      // if (args.genre) {
+      //   return books.filter((book) => book.genres.includes(args.genre));
+      // }
+      // if (args.author && args.genre) {
+      //   return books.filter(
+      //     (book) =>
+      //       book.genres.includes(args.genre) && book.author === args.author
+      //   );
+      // }
+      // return books;
     },
   },
 
-  Author: {
-    bookCount: (root) => {
-      const authorBook = books.filter((book) => book.author === root.name);
-      return authorBook.length;
-    },
-  },
+  // Author: {
+  //   bookCount: (root) => {
+  //     const authorBook = books.filter((book) => book.author === root.name);
+  //     return authorBook.length;
+  //   },
+  // },
 
   Mutation: {
     addBook: (root, args) => {
