@@ -22,7 +22,7 @@ module.exports.typeDefs = gql`
       author: String!
       published: Int!
       genres: [String!]!
-    ): Book
+    ): Book!
 
     editAuthor(name: String!, setBornTo: Int!): Author
   }

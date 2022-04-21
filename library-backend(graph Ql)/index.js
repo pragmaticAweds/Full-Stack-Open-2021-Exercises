@@ -26,21 +26,19 @@ const resolvers = {
     authorCount: async () => Author.collection.countDocuments(),
     allAuthors: async () => Author.find({}),
     allBooks: async (root, args) => {
-      return Book.find({});
-
-      // if (args.author) {
-      //   return books.filter((book) => book.author === args.author);
-      // }
-      // if (args.genre) {
-      //   return books.filter((book) => book.genres.includes(args.genre));
-      // }
-      // if (args.author && args.genre) {
-      //   return books.filter(
-      //     (book) =>
-      //       book.genres.includes(args.genre) && book.author === args.author
-      //   );
-      // }
-      // return books;
+      if (args.author) {
+        const author = await Author.findOne({ name: args.author });
+      }
+      if (args.genre) {
+        return books.filter((book) => book.genres.includes(args.genre));
+      }
+      if (args.author && args.genre) {
+        return books.filter(
+          (book) =>
+            book.genres.includes(args.genre) && book.author === args.author
+        );
+      }
+      return books;
     },
   },
 
