@@ -3,24 +3,25 @@ import { useState } from "react";
 import { NEW_BOOK } from "../Schema/queries";
 
 const NewBook = (props) => {
-  const [err, setErr] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
+  const [err, setErr] = useState("");
 
-  const [newBook, { error }] = useMutation(NEW_BOOK, {
+  const [newBook] = useMutation(NEW_BOOK, {
     onError: (error) => {
-      setErr(error.graphQLErrors[0].path?.join(". "));
+      setErr(error.networkError.result.errors[0].message);
+
+      setTimeout(() => {
+        setErr("");
+      }, 4000);
     },
   });
 
   if (!props.show) {
     return null;
-  }
-  if (error) {
-    console.log({ err });
   }
 
   const submit = async (event) => {
@@ -33,13 +34,6 @@ const NewBook = (props) => {
     setGenre("");
   };
 
-  // if (err) {
-  //   setTimeout(() => {
-  //     setErr("");
-  //   }, 4000);
-  // }
-  console.log(err);
-
   const addGenre = () => {
     setGenres(genres.concat(genre));
     setGenre("");
@@ -47,7 +41,7 @@ const NewBook = (props) => {
 
   return (
     <div>
-      <p style={{ color: "red" }}>error: {err}</p>
+      {err && <p style={{ color: "red" }}>error: {err}</p>}
       <form onSubmit={submit}>
         <div>
           title
@@ -68,7 +62,7 @@ const NewBook = (props) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(Number(target.value))}
           />
         </div>
         <div>
