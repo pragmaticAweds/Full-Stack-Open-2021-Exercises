@@ -24,6 +24,9 @@ module.exports.resolvers = {
     allAuthors: async () => Author.find({}),
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: () => authors.collection.countDocuments(),
+    me: async (root, args, { currentUser }) => {
+      return currentUser;
+    },
   },
 
   Author: {
@@ -36,6 +39,12 @@ module.exports.resolvers = {
     addBook: async (_, args, { currentUser }) => {
       if (!currentUser) {
         throw new AuthenticationError("Authentication Required");
+      }
+
+      const existingBook = await Book.findOne({ title: args.title });
+
+      if (existingBook) {
+        throw new UserInputError("Book Already exists");
       }
 
       let book;
@@ -52,16 +61,25 @@ module.exports.resolvers = {
         });
       }
 
-      const findAuthor = await Author.findOne({ name: args.author });
+      const authorIsExist = await Author.findOne({ name: args.author });
 
-      if (findAuthor) {
-        book = await new Book({ ...args, author: findAuthor }).save();
-        return book;
+      if (!authorIsExist) {
+        try {
+          await new Author({ name: args.author }).save();
+        } catch (error) {
+          throw new UserInputError(error.message);
+        }
       }
 
-      const newAuthor = await new Author({ name: args.author }).save();
+      const authorToSave = await Author.findOne({ name: args.author });
 
-      book = await new Book({ ...args, author: newAuthor.name }).save();
+      book = new Book({ ...args, author: authorToSave });
+
+      try {
+        await book.save();
+      } catch (error) {
+        throw new UserInputError(error.message);
+      }
 
       return book;
     },
@@ -72,9 +90,6 @@ module.exports.resolvers = {
       }
 
       const authorToUpdate = await Author.findOne({ name: args.name });
-
-      console.log(args.name);
-      console.log({ authorToUpdate });
 
       if (!authorToUpdate) {
         throw new UserInputError("User does not Exist");
