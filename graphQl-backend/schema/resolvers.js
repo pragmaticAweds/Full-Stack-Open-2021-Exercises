@@ -19,6 +19,15 @@ module.exports.resolvers = {
         );
         return book;
       }
+
+      if (args.genre) {
+        const genreArg = args.genre;
+        const booksGenre = await Book.find({
+          genres: { $in: [genreArg] },
+        }).populate("author");
+        return booksGenre;
+      }
+
       return Book.find({}).populate("author");
     },
     allAuthors: async () => Author.find({}),
@@ -97,13 +106,13 @@ module.exports.resolvers = {
 
       try {
         authorToUpdate.born = args.setBornTo;
-        authorToUpdate.save();
-        return authorToUpdate;
+        await authorToUpdate.save();
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
         });
       }
+      return authorToUpdate;
     },
 
     createUser: async (_, args) => {

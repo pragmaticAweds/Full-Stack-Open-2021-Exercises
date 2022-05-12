@@ -46,6 +46,6 @@ module.exports.typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     bookCount: Int!
     authorCount: Int!
-    me: User
+    me: User!
   }
 `;
