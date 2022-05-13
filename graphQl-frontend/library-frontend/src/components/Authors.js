@@ -2,8 +2,25 @@ import { useMutation, useQuery } from "@apollo/client";
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../Schema/queries";
 
 const Authors = (props) => {
-  const { data, loading, refetch } = useQuery(ALL_AUTHORS);
-  const [editAuthor] = useMutation(EDIT_AUTHOR);
+  const { data, loading } = useQuery(ALL_AUTHORS, {
+    onError: (error) => {
+      console.log({ error });
+      props.err(error.message);
+    },
+  });
+
+  const [editAuthor] = useMutation(EDIT_AUTHOR, {
+    update: (cache, res) => {
+      cache.updateQuery({ query: ALL_AUTHORS }, ({ allAuthors }) => {
+        const editedBorn = res.data.editAuthor;
+        return {
+          allAuthors: allAuthors.map((author) => {
+            return author.name === editedBorn.name ? editedBorn : author;
+          }),
+        };
+      });
+    },
+  });
 
   if (!props.show) {
     return null;
@@ -22,8 +39,6 @@ const Authors = (props) => {
     editAuthor({ variables: { name: author, setBornTo: born } });
 
     e.target.born.value = "";
-
-    refetch();
   };
 
   return (
@@ -32,7 +47,7 @@ const Authors = (props) => {
       <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>author name</th>
             <th>born</th>
             <th>books</th>
           </tr>
