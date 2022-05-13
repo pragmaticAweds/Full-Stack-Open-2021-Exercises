@@ -41,6 +41,10 @@ module.exports.typeDefs = gql`
     id: ID!
   }
 
+  type Subscription {
+    bookAdded: Book!
+  }
+
   type Query {
     allAuthors: [Author!]!
     allBooks(author: String, genre: String): [Book!]!
