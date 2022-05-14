@@ -9,6 +9,19 @@ const AUTHOR_DETAILS = gql`
   }
 `;
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    author {
+      ...AuthorDetails
+    }
+    published
+    genres
+    id
+  }
+  ${AUTHOR_DETAILS}
+`;
+
 export const ALL_AUTHORS = gql`
   query {
     allAuthors {
@@ -21,16 +34,20 @@ export const ALL_AUTHORS = gql`
 export const ALL_BOOKS = gql`
   query genreCheck($genre: String) {
     allBooks(genre: $genre) {
-      title
-      author {
-        ...AuthorDetails
-      }
-      published
-      genres
-      id
+      ...BookDetails
     }
   }
   ${AUTHOR_DETAILS}
+  ${BOOK_DETAILS}
+`;
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
 `;
 
 export const NEW_BOOK = gql`
@@ -46,17 +63,11 @@ export const NEW_BOOK = gql`
       published: $published
       genres: $genres
     ) {
-      title
-      published
-      genres
-      id
-      author {
-        ...AuthorDetails
-      }
+      ...BookDetails
     }
   }
 
-  ${AUTHOR_DETAILS}
+  ${BOOK_DETAILS}
 `;
 
 export const EDIT_AUTHOR = gql`

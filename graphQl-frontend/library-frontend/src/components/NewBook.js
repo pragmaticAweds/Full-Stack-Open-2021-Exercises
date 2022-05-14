@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { updateCache } from "../helper-function";
 import { ALL_BOOKS, NEW_BOOK } from "../Schema/queries";
 
 const NewBook = (props) => {
@@ -19,11 +20,7 @@ const NewBook = (props) => {
     },
 
     update: (cache, res) => {
-      cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return {
-          allBooks: allBooks.concat(res.data.addBook),
-        };
-      });
+      updateCache(cache, { query: ALL_BOOKS }, res.data.addBook);
     },
   });
 
