@@ -13,14 +13,15 @@ const NewBook = (props) => {
   const [newBook] = useMutation(NEW_BOOK, {
     onError: (error) => {
       props.err(error.message);
+      console.log({ err: error.message });
 
       setTimeout(() => {
         props.err("");
       }, 4000);
     },
 
-    update: (cache, res) => {
-      updateCache(cache, { query: ALL_BOOKS }, res.data.addBook);
+    update: (cache, { data: { addBook } }) => {
+      updateCache(cache, ALL_BOOKS, addBook);
     },
   });
 

@@ -45,7 +45,15 @@ const splitLink = split(
 );
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      query: {
+        allBooks: {
+          keyFields: ["id"],
+        },
+      },
+    },
+  }),
   link: splitLink,
 });
 

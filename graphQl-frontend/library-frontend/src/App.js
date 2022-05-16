@@ -12,12 +12,13 @@ const App = () => {
   const [page, setPage] = useState("authors");
   const [errMsg, setErrMsg] = useState(null);
   const [token, setToken] = useState(null);
+  const { cache, resetStore } = useApolloClient();
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       const addedBook = subscriptionData.data.bookAdded;
       window.alert(`New book added :::=> Title::> ${addedBook.title}`);
-      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+      updateCache(cache, ALL_BOOKS, addedBook);
     },
   });
 
@@ -32,12 +33,10 @@ const App = () => {
     setToken(existingToken);
   }, [token]);
 
-  const client = useApolloClient();
-
   const logOut = () => {
     setToken(null);
     localStorage.clear();
-    client.resetStore();
+    resetStore();
   };
 
   if (!token) {
