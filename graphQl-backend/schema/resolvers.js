@@ -28,12 +28,30 @@ module.exports.resolvers = {
         const booksGenre = await Book.find({
           genres: { $in: [genreArg] },
         }).populate("author");
+
         return booksGenre;
       }
 
       return Book.find({}).populate("author");
     },
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => {
+      const authors = await Author.find({});
+      const books = await Book.find({}).populate("author");
+      // console.log({ books });
+      return authors.map((author) => {
+        const bookCount = books.reduce(
+          (acc, book) => (author.name === book.author.name ? acc + 1 : acc),
+          0
+        );
+
+        return {
+          name: author["name"],
+          bookCount,
+          born: author["born"],
+          id: author["_id"],
+        };
+      });
+    },
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: () => authors.collection.countDocuments(),
     me: async (root, args, { currentUser }) => {
@@ -41,12 +59,6 @@ module.exports.resolvers = {
     },
   },
 
-  Author: {
-    bookCount: async (root) => {
-      const books = await Book.find({}).populate("author");
-      return books.filter((book) => book.author.name === root.name).length;
-    },
-  },
   Mutation: {
     addBook: async (_, args, { currentUser }) => {
       if (!currentUser) {

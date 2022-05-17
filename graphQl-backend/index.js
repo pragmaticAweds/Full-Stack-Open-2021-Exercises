@@ -24,6 +24,8 @@ mongoose
   .then(() => console.log("connected to database successfully"))
   .catch((err) => console.log(err));
 
+mongoose.set("debug", true);
+
 const start = async () => {
   const app = express();
   const httpServer = http.createServer(app);
