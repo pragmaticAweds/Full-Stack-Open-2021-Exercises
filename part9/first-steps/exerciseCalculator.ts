@@ -8,7 +8,7 @@ interface Iarr {
   average: number;
 }
 
-const parseArgvToNum = (arr: Array<string>) => {
+export const parseArgvToNum = (arr: Array<string>) => {
   if (arr.length < 2) throw new Error("the Argument is small");
 
   return arr.map((no) => {
@@ -18,7 +18,10 @@ const parseArgvToNum = (arr: Array<string>) => {
   });
 };
 
-const exerciseCalculator = (target: number, arr: Array<number>): Iarr => {
+export const exerciseCalculator = (
+  target: number,
+  arr: Array<number>
+): Iarr => {
   const average = arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
   let trainingDays = arr.filter((no) => no !== 0).length;
   return {
