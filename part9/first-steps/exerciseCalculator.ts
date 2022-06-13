@@ -28,8 +28,14 @@ export const exerciseCalculator = (
     periodLength: arr.length,
     trainingDays,
     success: average >= target ? true : false,
-    rating: 2,
-    ratingDescription: "not too bad but could be better",
+    rating:
+      average <= 1.5 ? 1 : average >= 1.5 && average <= target ? 2 : target,
+    ratingDescription:
+      average <= 1.5
+        ? "bad"
+        : average >= 1.5 && average <= target
+        ? "not too bad but could be better"
+        : "good",
     target,
     average,
   };

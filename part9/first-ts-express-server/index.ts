@@ -1,9 +1,6 @@
 import express from "express";
 import { calculateBmi } from "../first-steps/bmiCalculator";
-import {
-  parseArgvToNum,
-  exerciseCalculator,
-} from "../first-steps/exerciseCalculator";
+import { exerciseCalculator } from "../first-steps/exerciseCalculator";
 
 const app = express();
 app.use(express.json());
@@ -29,12 +26,8 @@ app.get("/bmi", async (req, res) => {
 
 app.post("/exerciseCalculator", async (req, res) => {
   const { daily_exercises, target } = req.body;
-  console.log(daily_exercises, target);
-
-  const data = parseArgvToNum(daily_exercises);
-
   res.send({
-    exercise: exerciseCalculator(Number(target), data),
+    exercise: exerciseCalculator(target, daily_exercises),
   });
 });
 
