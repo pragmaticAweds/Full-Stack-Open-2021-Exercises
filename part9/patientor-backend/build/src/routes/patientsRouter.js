@@ -8,13 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-app.get("/api/ping", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("pong");
+const express_1 = require("express");
+const patientsService_1 = require("../services/patientsService");
+const router = (0, express_1.Router)();
+router.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.send((0, patientsService_1.nonSensitivePatientsDataEntries)());
 }));
-app.listen(2000, () => console.log("connected successfully"));
+exports.default = router;
