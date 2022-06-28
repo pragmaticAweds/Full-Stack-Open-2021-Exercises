@@ -1,5 +1,5 @@
 import diagnosesData from "../../data/diagnoses.json";
-import { diagnoseType } from "../type";
+import { diagnoseType } from "../utils/type";
 
 const diagnoses: Array<diagnoseType> = diagnosesData;
 

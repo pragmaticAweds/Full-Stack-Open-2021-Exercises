@@ -4,10 +4,11 @@ import patientsRouter from "./routes/patientsRouter";
 import cors from "cors";
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 app.get("/api/ping", async (_req, res) => {
-  await res.send("pong");
+  res.send("pong");
 });
 
 app.use("/api/diagnoses", diagnosesRouter);

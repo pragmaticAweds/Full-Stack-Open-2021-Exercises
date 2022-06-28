@@ -6,6 +6,11 @@ export type diagnoseType = {
 
 export type genderType = "male" | "female";
 
+export enum Gender {
+  male = "male",
+  female = "female",
+}
+
 export type patientType = {
   id: string;
   name: string;
@@ -15,4 +20,14 @@ export type patientType = {
   occupation: string;
 };
 
+export type newPatientEntry = Omit<patientType, "id">;
+
 export type nonSensitivePatientsDataType = Omit<patientType, "ssn">;
+
+export type inputFields = {
+  name: unknown;
+  ssn: unknown;
+  gender: unknown;
+  occupation: unknown;
+  dateOfBirth: unknown;
+};
