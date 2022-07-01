@@ -1,3 +1,4 @@
+import { error } from "console";
 import { Router } from "express";
 import {
   addPatient,
@@ -16,13 +17,12 @@ router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = singleUser(id);
-    console.log({ data });
+    if (data === undefined) {
+      throw error(undefined);
+    }
     res.send(data);
   } catch (err: unknown) {
-    let error = "Something went Wrong";
-    if (err instanceof Error) {
-      error += " Error: " + err.message;
-    }
+    let error = "Wrong Credentials";
     res.status(400).send(error);
   }
 });

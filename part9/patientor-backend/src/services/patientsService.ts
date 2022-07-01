@@ -16,14 +16,12 @@ const nonSensitivePatientsDataEntries = (): PublicPatient[] =>
   }));
 const id = uuid();
 
-const addPatient = (entry: newPatientEntry): patientType => {
+const addPatient = (entry: newPatientEntry): newPatientEntry => {
   const newEntry = {
     id,
     entries: [],
     ...entry,
   };
-
-  console.log({ newEntry });
 
   patientsEntries.push(newEntry);
 

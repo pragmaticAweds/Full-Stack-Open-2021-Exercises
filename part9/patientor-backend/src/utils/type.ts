@@ -11,7 +11,6 @@ export enum Gender {
   female = "female",
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Entry {}
 
 export interface patientType {
