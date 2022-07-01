@@ -17,9 +17,10 @@ const diagnosesRouter_1 = __importDefault(require("./routes/diagnosesRouter"));
 const patientsRouter_1 = __importDefault(require("./routes/patientsRouter"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get("/api/ping", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield res.send("pong");
+    res.send("pong");
 }));
 app.use("/api/diagnoses", diagnosesRouter_1.default);
 app.use("/api/patients", patientsRouter_1.default);

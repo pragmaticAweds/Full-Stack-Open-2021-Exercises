@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addPatient,
   nonSensitivePatientsDataEntries,
+  singleUser,
 } from "../services/patientsService";
 import toNewPatientEntry from "../utils/inputValidator";
 
@@ -9,6 +10,21 @@ const router = Router();
 
 router.get("/", async (_req, res) => {
   res.send(nonSensitivePatientsDataEntries());
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = singleUser(id);
+    console.log({ data });
+    res.send(data);
+  } catch (err: unknown) {
+    let error = "Something went Wrong";
+    if (err instanceof Error) {
+      error += " Error: " + err.message;
+    }
+    res.status(400).send(error);
+  }
 });
 
 router.post("/", async (req, res) => {
