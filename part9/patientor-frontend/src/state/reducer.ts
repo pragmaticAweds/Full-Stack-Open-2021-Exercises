@@ -9,6 +9,10 @@ export type Action =
   | {
       type: "ADD_PATIENT";
       payload: Patient;
+    }
+  | {
+      type: "SINGLE_PATIENT";
+      payload: Patient;
     };
 
 export const reducer = (state: State, action: Action): State => {
@@ -21,18 +25,54 @@ export const reducer = (state: State, action: Action): State => {
             (memo, patient) => ({ ...memo, [patient.id]: patient }),
             {}
           ),
-          ...state.patients
-        }
+          ...state.patients,
+        },
       };
+
     case "ADD_PATIENT":
       return {
         ...state,
         patients: {
           ...state.patients,
-          [action.payload.id]: action.payload
-        }
+          [action.payload.id]: action.payload,
+        },
       };
+
+    case "SINGLE_PATIENT":
+      const patient = action.payload;
+      const findPatient =
+        state.patientRecords !== null
+          ? state.patientRecords.hasOwnProperty(patient.id)
+          : state.patientRecords;
+      if (!findPatient) {
+        return {
+          ...state,
+          patientRecords: patient,
+        };
+      }
+      return state;
     default:
       return state;
   }
+};
+
+export const setPatientList = (data: Patient[]): Action => {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: data,
+  };
+};
+
+export const addPatient = (data: Patient): Action => {
+  return {
+    type: "ADD_PATIENT",
+    payload: data,
+  };
+};
+
+export const setSinglePatient = (data: Patient): Action => {
+  return {
+    type: "SINGLE_PATIENT",
+    payload: data,
+  };
 };
