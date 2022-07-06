@@ -40,4 +40,11 @@ router.post("/", async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+router.post("/:id/entries", async (req, res) => {
+  try {
+    const id = req.params.id;
+    res.json(id);
+  } catch (err: unknown) {}
+});
 export default router;

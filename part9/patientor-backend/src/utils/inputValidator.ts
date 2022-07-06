@@ -1,11 +1,11 @@
 import { newPatientEntry, Gender, inputFields } from "./type";
 
-const isString = (text: unknown): text is string =>
+export const isString = (text: unknown): text is string =>
   typeof text === "string" || text instanceof String;
 
-const isDate = (date: string): boolean => Boolean(Date.parse(date));
+export const isDate = (date: string): boolean => Boolean(Date.parse(date));
 
-const isGender = (gender: any): gender is Gender =>
+export const isGender = (gender: any): gender is Gender =>
   Object.values(Gender).includes(gender);
 
 export const parseName = (name: unknown): string => {
