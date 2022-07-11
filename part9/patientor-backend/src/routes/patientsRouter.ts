@@ -2,9 +2,11 @@ import { error } from "console";
 import { Router } from "express";
 import {
   addPatient,
+  addPatientEntry,
   nonSensitivePatientsDataEntries,
   singleUser,
 } from "../services/patientsService";
+import validatePatientNewEntry from "../utils/entryInputValidators";
 import toNewPatientEntry from "../utils/inputValidator";
 
 const router = Router();
@@ -42,9 +44,15 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/:id/entries", async (req, res) => {
+  const id = req.params.id;
+  const checkEntryInputs = validatePatientNewEntry(req.body);
   try {
-    const id = req.params.id;
-    res.json(id);
-  } catch (err: unknown) {}
+    const newEntry = addPatientEntry(id, checkEntryInputs);
+    res.json({ newEntry, id });
+  } catch (err: any) {
+    console.log(err.message);
+  }
 });
 export default router;
+{
+}

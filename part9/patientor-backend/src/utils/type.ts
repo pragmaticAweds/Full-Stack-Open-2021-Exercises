@@ -6,11 +6,26 @@ export type diagnoseType = {
 
 export type genderType = "male" | "female";
 
+export type entryType = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
+
 export enum Gender {
   male = "male",
   female = "female",
 }
 
+export enum EntryType {
+  HealthCheck = "HealthCheck",
+  Hospital = "Hospital",
+  OccupationalHealthcare = "OccupationalHealthcare",
+}
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  type: EntryType;
+  specialist: string;
+  diagnosisCodes?: Array<diagnoseType["code"]>;
+}
 export enum HealthCheckRating {
   "Healthy" = 0,
   "LowRisk" = 1,
@@ -18,40 +33,30 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
-export enum entryType {
-  healthCheck = "HealthCheck",
-  hospital = "Hospital",
-  OccupationalHealthcare = "OccupationalHealthcare",
-}
-
-export interface BaseEntry {
-  id: string;
-  description: string;
-  date: string;
-  specialist: string;
-  employerName?: string;
-  diagnosisCodes?: Array<diagnoseType["code"]>;
-}
-
 export interface HealthCheckEntry extends BaseEntry {
-  type: entryType.healthCheck;
+  type: EntryType.HealthCheck;
   healthCheckRating: HealthCheckRating;
 }
 
-export interface HospitalEntry extends BaseEntry {
-  type: entryType.hospital;
-  discharge: {
-    date: string;
-    criteria: string;
-  };
+export interface SickLeave {
+  startDate: string;
+  endDate: string;
 }
 
-export interface OccupationalHealthcareEntry extends BaseEntry {
-  type: entryType.OccupationalHealthcare;
-  sickLeave?: {
-    startDate: string;
-    endDate: string;
-  };
+interface OccupationalHealthcareEntry extends BaseEntry {
+  type: EntryType.OccupationalHealthcare;
+  employerName: string;
+  sickLeave?: SickLeave;
+}
+
+export interface Discharge {
+  date: string;
+  criteria: string;
+}
+
+export interface HospitalEntry extends BaseEntry {
+  type: EntryType.Hospital;
+  discharge: Discharge;
 }
 
 export type Entry =
@@ -64,7 +69,10 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
   : never;
 // Define Entry without the 'id' property
-export type EntryWithoutId = UnionOmit<Entry, "id">;
+
+export type NewBaseEntry = Omit<BaseEntry, "id">;
+
+export type NewEntryWithoutId = UnionOmit<Entry, "id">;
 
 export interface patientType {
   id: string;

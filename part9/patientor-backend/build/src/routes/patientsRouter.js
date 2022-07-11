@@ -12,12 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const console_1 = require("console");
 const express_1 = require("express");
 const patientsService_1 = require("../services/patientsService");
 const inputValidator_1 = __importDefault(require("../utils/inputValidator"));
 const router = (0, express_1.Router)();
 router.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send((0, patientsService_1.nonSensitivePatientsDataEntries)());
+}));
+router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const data = (0, patientsService_1.singleUser)(id);
+        if (data === undefined) {
+            throw (0, console_1.error)(undefined);
+        }
+        res.send(data);
+    }
+    catch (err) {
+        let error = "Wrong Credentials";
+        res.status(400).send(error);
+    }
 }));
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newEntry = (0, inputValidator_1.default)(req.body);
@@ -32,5 +47,12 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         res.status(400).send(err);
     }
+}));
+router.post("/:id/entries", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        res.json(id);
+    }
+    catch (err) { }
 }));
 exports.default = router;
