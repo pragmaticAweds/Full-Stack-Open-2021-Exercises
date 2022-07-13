@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import { useStateValue } from "../state/state";
 import { Female, Male } from "@mui/icons-material";
 import axios from "axios";
@@ -7,9 +7,12 @@ import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
 import { setSinglePatient } from "../state";
 import { Entry } from "../types";
+import HospitalCheckEntry from "../components/HospitalCheckEntry";
+import OccupationEntryCheck from "../components/OccupationEntryCheck";
+import HealthCheck from "../components/HealthCheckEntry";
 
 function index(): React.ReactElement {
-  const [{ patientRecords }, dispatch] = useStateValue();
+  const [{ patientRecords, diagnoses }, dispatch] = useStateValue();
 
   const { id } = useParams<{ id: string }>();
 
@@ -24,7 +27,7 @@ function index(): React.ReactElement {
     };
     fetchSinglePatient();
   }, [dispatch]);
-  console.log({ patientRecords });
+
   return (
     <div>
       {patientRecords !== null ? (
@@ -52,19 +55,26 @@ function index(): React.ReactElement {
             entries
           </Typography>
           <div>
-            {patientRecords.entries?.map((patient: Entry) => (
-              <div key={`entry_Key_${patient.id}}`}>
-                <Typography>{patient.description}</Typography>
-                <ul>
-                  {patient.diagnosisCodes?.map((code, i) => (
-                    <li key={`code_Key_${i}`}>{code}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {patientRecords.entries?.map((patient: Entry) => {
+              switch (patient.type) {
+                case "Hospital":
+                  return <HospitalCheckEntry key={patient.id} {...patient} />;
+                case "OccupationalHealthcare":
+                  return <OccupationEntryCheck key={patient.id} {...patient} />;
+                case "HealthCheck":
+                  return <HealthCheck key={patient.id} {...patient} />;
+
+                default:
+                  patient;
+                  break;
+              }
+            })}
           </div>
         </>
       ) : null}
+      <Button variant="contained" onClick={() => console.log("clicked")}>
+        Add New Entry
+      </Button>
     </div>
   );
 }
