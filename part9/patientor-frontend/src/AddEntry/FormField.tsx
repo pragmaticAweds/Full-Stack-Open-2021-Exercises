@@ -55,7 +55,7 @@ const EntryTypeFormField = ({ entryType }: Props) => {
         </div>
       );
     default:
-      break;
+      return null;
   }
 };
 

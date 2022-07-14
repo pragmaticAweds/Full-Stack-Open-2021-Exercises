@@ -5,7 +5,6 @@ const HospitalCheckEntry = ({
   date,
   description,
   specialist,
-  employerName,
   diagnosisCodes,
   discharge,
 }: HospitalEntry) => {
@@ -19,9 +18,7 @@ const HospitalCheckEntry = ({
         marginBottom: "0.7rem",
       }}
     >
-      <p>
-        {date} {employerName}
-      </p>
+      <p>{date}</p>
       <p>{description}</p>
 
       <p>diagnose by {specialist}</p>

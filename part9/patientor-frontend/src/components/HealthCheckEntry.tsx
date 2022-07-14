@@ -6,7 +6,6 @@ const HealthCheck = ({
   date,
   description,
   specialist,
-  employerName,
   diagnosisCodes,
   healthCheckRating,
 }: HealthCheckEntry) => {
@@ -22,7 +21,7 @@ const HealthCheck = ({
       }}
     >
       <p>
-        {date} <MedicalServices /> {employerName}
+        {date} <MedicalServices />
       </p>
       <p>{description}</p>
       <Favorite

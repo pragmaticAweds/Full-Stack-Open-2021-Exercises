@@ -28,7 +28,6 @@ export interface BaseEntry {
   description: string;
   date: string;
   specialist: string;
-  employerName?: string;
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
 
@@ -47,6 +46,7 @@ export interface HospitalEntry extends BaseEntry {
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
   type: EntryType.OccupationalHealthcare;
+  employerName?: string;
   sickLeave: {
     startDate: string;
     endDate: string;
