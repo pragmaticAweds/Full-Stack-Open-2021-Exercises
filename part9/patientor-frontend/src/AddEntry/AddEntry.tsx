@@ -1,6 +1,7 @@
 import { Entry } from "../types";
 import EntryField from "./FormField";
 
+import * as yup from "yup";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
@@ -17,15 +18,15 @@ export type NewEntryWithoutId = UnionOmit<Entry, "id">;
 interface EntryFormProps {
   onSubmit: (values: NewEntryWithoutId) => void;
   onCancel: () => void;
+  validationSchema: yup.ObjectSchema<any>;
   initialValues: NewEntryWithoutId;
-  entryValidation: boolean;
 }
 
-export const AddPatientForm = ({
+const AddPatientForm = ({
   onSubmit,
   onCancel,
   initialValues,
-  entryValidation,
+  validationSchema,
 }: EntryFormProps) => {
   const [{ diagnoses }] = useStateValue();
 
@@ -34,7 +35,7 @@ export const AddPatientForm = ({
       initialValues={initialValues}
       enableReinitialize={true}
       onSubmit={onSubmit}
-      validationSchema={entryValidation}
+      validationSchema={validationSchema}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         return (
@@ -94,3 +95,5 @@ export const AddPatientForm = ({
     </Formik>
   );
 };
+
+export default AddPatientForm;

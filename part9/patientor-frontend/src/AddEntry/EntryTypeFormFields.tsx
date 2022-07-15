@@ -1,20 +1,26 @@
+import { Form } from "formik";
 import { useState, useCallback } from "react";
 import yup from "yup";
+import { CustomSelect } from "../AddPatientModal/FormField";
 import { EntryType, NewEntryWithoutId } from "../types";
 import AddEntry from "./AddEntry";
 
 const options = [
   {
-    key: EntryType.HealthCheck,
+    label: EntryType.HealthCheck,
     value: EntryType.HealthCheck,
     text: "Health Check",
   },
   {
-    key: EntryType.OccupationalHealthcare,
+    label: EntryType.OccupationalHealthcare,
     value: EntryType.OccupationalHealthcare,
     text: "Occupational Health Care",
   },
-  { key: EntryType.Hospital, value: EntryType.Hospital, text: "Hospital" },
+  {
+    label: EntryType.Hospital,
+    value: EntryType.Hospital,
+    text: "Hospital",
+  },
 ];
 
 const InitialEntryValues = {
@@ -101,11 +107,13 @@ interface Props {
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HealthCheck);
-  //     const handleChange = (
-  //     _e: React.SyntheticEvent
-  //   ): void => {
-  //     if (value) setEntryType(value as EntryType);
-  //   };
+
+  // {event:React.ChangeEvent<{ value: unknown }>
+
+  // const handleChange = (e: React.SyntheticEvent): void => {
+  //   if (value) setEntryType(value as EntryType);
+  // event.target.value;
+  // };
   const entryForm = useCallback(() => {
     switch (entryType) {
       case EntryType.HealthCheck:
@@ -140,5 +148,22 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     }
   }, [entryType, onSubmit, onCancel]);
 
-  return;
+  return (
+    <>
+      <Form>
+        <label>EntryType</label>
+        {/* <SelectField name="entry-type" label="entry-type" options={options} /> */}
+
+        <CustomSelect
+          label="EntryType"
+          id="EntryType"
+          options={options}
+          value={entryType}
+          onChange={() => console.log("")}
+        />
+      </Form>
+    </>
+  );
 };
+
+export default AddEntryForm;

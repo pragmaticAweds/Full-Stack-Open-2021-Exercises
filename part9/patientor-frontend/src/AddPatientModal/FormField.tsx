@@ -149,3 +149,29 @@ export const DiagnosisSelection = ({
     </FormControl>
   );
 };
+
+interface CustomSelectProps {
+  label: string;
+  id: string;
+  value: string;
+  options: Array<{ label: EntryType; value: EntryType; text: string }>;
+  onChange: () => void;
+}
+
+export const CustomSelect = ({
+  label,
+  id,
+  value,
+  options,
+  onChange,
+}: CustomSelectProps) => {
+  return (
+    <Select id={id} labelId={label} value={value} onChange={onChange}>
+      {options.map((option) => (
+        <MenuItem key={option.text} value={option.value}>
+          {option.value}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};
