@@ -110,10 +110,10 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 
   // {event:React.ChangeEvent<{ value: unknown }>
 
-  // const handleChange = (e: React.SyntheticEvent): void => {
-  //   if (value) setEntryType(value as EntryType);
-  // event.target.value;
-  // };
+  const handleChange = (e: React.ChangeEvent<{ value: unknown }>): void => {
+    const value = e.target.value;
+    if (value) setEntryType(value as EntryType);
+  };
   const entryForm = useCallback(() => {
     switch (entryType) {
       case EntryType.HealthCheck:
@@ -159,7 +159,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           id="EntryType"
           options={options}
           value={entryType}
-          onChange={() => console.log("")}
+          onChange={handleChange}
         />
       </Form>
     </>

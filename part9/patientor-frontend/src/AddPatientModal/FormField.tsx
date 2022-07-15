@@ -155,7 +155,7 @@ interface CustomSelectProps {
   id: string;
   value: string;
   options: Array<{ label: EntryType; value: EntryType; text: string }>;
-  onChange: () => void;
+  onChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
 }
 
 export const CustomSelect = ({
