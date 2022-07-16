@@ -1,3 +1,4 @@
+import { Divider } from "@material-ui/core";
 import { Form } from "formik";
 import { useState, useCallback } from "react";
 import yup from "yup";
@@ -108,8 +109,6 @@ interface Props {
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HealthCheck);
 
-  // {event:React.ChangeEvent<{ value: unknown }>
-
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>): void => {
     const value = e.target.value;
     if (value) setEntryType(value as EntryType);
@@ -162,6 +161,8 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           onChange={handleChange}
         />
       </Form>
+      <Divider />
+      {entryForm()}
     </>
   );
 };
