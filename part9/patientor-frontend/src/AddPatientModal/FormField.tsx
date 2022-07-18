@@ -81,7 +81,7 @@ interface NumberProps extends FieldProps {
 }
 
 export const NumberField = ({ field, label, min, max }: NumberProps) => {
-  const [value, setValue] = useState<number>();
+  const [value, setValue] = useState<number>(min);
 
   return (
     <div style={{ marginBottom: "1em" }}>
@@ -119,7 +119,9 @@ export const DiagnosisSelection = ({
   const [selectedDiagnoses, setDiagnoses] = useState<string[]>([]);
   const field = "diagnosisCodes";
   const onChange = (data: string[]) => {
-    setDiagnoses([...data]);
+    console.log({ data, field });
+    setDiagnoses(data);
+    console.log({ selectedDiagnoses });
     setFieldTouched(field, true);
     setFieldValue(field, selectedDiagnoses);
   };
@@ -137,6 +139,7 @@ export const DiagnosisSelection = ({
         multiple
         value={selectedDiagnoses}
         onChange={(e) => onChange(e.target.value as string[])}
+        // onChange={(e) => console.log(e.target.value)}
         input={<Input />}
       >
         {stateOptions.map((option) => (

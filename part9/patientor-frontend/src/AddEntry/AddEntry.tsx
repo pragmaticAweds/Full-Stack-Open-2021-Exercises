@@ -1,4 +1,4 @@
-import { Entry } from "../types";
+import { NewEntryWithoutId } from "../types";
 import EntryField from "./FormField";
 
 import * as yup from "yup";
@@ -7,14 +7,6 @@ import { Field, Formik, Form } from "formik";
 import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 
-// Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown
-  ? Omit<T, K>
-  : never;
-// Define Entry without the 'id' property
-
-export type NewEntryWithoutId = UnionOmit<Entry, "id">;
-
 interface EntryFormProps {
   onSubmit: (values: NewEntryWithoutId) => void;
   onCancel: () => void;
@@ -22,7 +14,7 @@ interface EntryFormProps {
   initialValues: NewEntryWithoutId;
 }
 
-const AddPatientForm = ({
+const AddPatientEntryForm = ({
   onSubmit,
   onCancel,
   initialValues,
@@ -96,4 +88,4 @@ const AddPatientForm = ({
   );
 };
 
-export default AddPatientForm;
+export default AddPatientEntryForm;

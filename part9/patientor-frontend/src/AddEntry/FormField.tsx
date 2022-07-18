@@ -12,7 +12,7 @@ const EntryTypeFormField = ({ entryType }: Props) => {
       return (
         <Field
           label="Health Check Rating"
-          name="health-check-rating"
+          name="healthCheckRating"
           component={NumberField}
           min={0}
           max={3}
@@ -25,13 +25,13 @@ const EntryTypeFormField = ({ entryType }: Props) => {
           <Field
             label="Date"
             placeholder="YYYY-MM-DD"
-            name="discharge-date"
+            name="discharge.date"
             component={TextField}
           />
           <Field
             label="Criteria"
             placeholder="Criteria"
-            name="discharge-criteria"
+            name="discharge.criteria"
             component={TextField}
           />
         </div>
@@ -39,17 +39,24 @@ const EntryTypeFormField = ({ entryType }: Props) => {
     case EntryType.OccupationalHealthcare:
       return (
         <div>
+          <Field
+            label="Employer Name"
+            placeholder="Employer Name"
+            name="employerName"
+            component={TextField}
+          />
+
           <h4>Sick Leave</h4>
           <Field
             label="Start-Date"
             placeholder="YYYY-MM-DD"
-            name="sickLeave-startDate"
+            name="sickLeave.startDate"
             component={TextField}
           />
           <Field
             label="End-Date"
             placeholder="YYYY-MM-DD"
-            name="sickLeave-endDate"
+            name="sickLeave.endDate"
             component={TextField}
           />
         </div>

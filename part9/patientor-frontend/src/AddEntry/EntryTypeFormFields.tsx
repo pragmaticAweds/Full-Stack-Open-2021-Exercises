@@ -1,7 +1,7 @@
 import { Divider } from "@material-ui/core";
-import { Form } from "formik";
+// import { Form } from "formik";
 import { useState, useCallback } from "react";
-import yup from "yup";
+import * as yup from "yup";
 import { CustomSelect } from "../AddPatientModal/FormField";
 import { EntryType, NewEntryWithoutId } from "../types";
 import AddEntry from "./AddEntry";
@@ -109,7 +109,7 @@ interface Props {
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HealthCheck);
 
-  const handleChange = (e: React.ChangeEvent<{ value: unknown }>): void => {
+  const handleChange = (e: React.ChangeEvent<{ value: any }>): void => {
     const value = e.target.value;
     if (value) setEntryType(value as EntryType);
   };
@@ -149,10 +149,8 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 
   return (
     <>
-      <Form>
-        <label>EntryType</label>
-        {/* <SelectField name="entry-type" label="entry-type" options={options} /> */}
-
+      <form>
+        <h3>EntryType</h3>
         <CustomSelect
           label="EntryType"
           id="EntryType"
@@ -160,7 +158,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           value={entryType}
           onChange={handleChange}
         />
-      </Form>
+      </form>
       <Divider />
       {entryForm()}
     </>

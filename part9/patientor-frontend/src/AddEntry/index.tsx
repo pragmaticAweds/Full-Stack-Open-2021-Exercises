@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Divider } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { NewEntryWithoutId } from "./AddEntry";
+import { NewEntryWithoutId } from "../types";
 
 import EntryForm from "./EntryTypeFormFields";
 
@@ -13,7 +13,7 @@ interface Props {
 
 const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
   <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
-    <DialogTitle>Add a new patient</DialogTitle>
+    <DialogTitle>Add a new Entry</DialogTitle>
     <Divider />
     <DialogContent>
       {error && <Alert severity="error">{`Error: ${error}`}</Alert>}
