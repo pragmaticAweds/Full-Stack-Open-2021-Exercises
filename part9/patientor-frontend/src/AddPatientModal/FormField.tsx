@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import {
   Select,
@@ -81,25 +81,11 @@ interface NumberProps extends FieldProps {
 }
 
 export const NumberField = ({ field, label, min, max }: NumberProps) => {
-  const [value, setValue] = useState<number>(min);
-
   return (
     <div style={{ marginBottom: "1em" }}>
-      <TextFieldMUI
-        fullWidth
-        label={label}
-        placeholder={String(min)}
-        type="number"
-        {...field}
-        value={value}
-        onChange={(e) => {
-          const value = parseInt(e.target.value);
-          if (value === undefined) return;
-          if (value > max) setValue(max);
-          else if (value <= min) setValue(min);
-          else setValue(Math.floor(value));
-        }}
-      />
+      <label>{label}</label>
+      <br />
+      <Field {...field} type="number" label={label} min={min} max={max} />
       <Typography variant="subtitle2" style={{ color: "red" }}>
         <ErrorMessage name={field.name} />
       </Typography>
@@ -118,10 +104,9 @@ export const DiagnosisSelection = ({
 }) => {
   const [selectedDiagnoses, setDiagnoses] = useState<string[]>([]);
   const field = "diagnosisCodes";
+
   const onChange = (data: string[]) => {
-    console.log({ data, field });
     setDiagnoses(data);
-    console.log({ selectedDiagnoses });
     setFieldTouched(field, true);
     setFieldValue(field, selectedDiagnoses);
   };
@@ -139,7 +124,6 @@ export const DiagnosisSelection = ({
         multiple
         value={selectedDiagnoses}
         onChange={(e) => onChange(e.target.value as string[])}
-        // onChange={(e) => console.log(e.target.value)}
         input={<Input />}
       >
         {stateOptions.map((option) => (

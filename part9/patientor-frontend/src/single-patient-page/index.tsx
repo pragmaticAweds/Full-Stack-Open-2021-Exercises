@@ -5,7 +5,7 @@ import { Female, Male } from "@mui/icons-material";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
-import { setSinglePatient } from "../state";
+import { setSinglePatient, updatePatient } from "../state";
 import { Entry, EntryType, NewEntryWithoutId } from "../types";
 import HospitalCheckEntry from "../components/HospitalCheckEntry";
 import OccupationEntryCheck from "../components/OccupationEntryCheck";
@@ -39,15 +39,21 @@ function index(): React.ReactElement {
   }, [dispatch]);
 
   const submitNewEntry = async (values: NewEntryWithoutId) => {
-    try {
-      console.log({ values });
-      // const data = await axios.post<EntryType>(
-      //   `${apiBaseUrl}/${id}/entries`,
-      //   values
-      // );
-      // console.log({ data });
+    const dataToSend = { ...values };
 
-      // dispatch(addPatient(newPatient));
+    if (dataToSend.type === "OccupationalHealthcare") {
+      if (dataToSend.sickLeave?.startDate === "") {
+        dataToSend.sickLeave = undefined;
+      }
+    }
+    try {
+      const {
+        data: { newEntry },
+      } = await axios.post<{ id: string; newEntry: Entry }>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        dataToSend
+      );
+      dispatch(updatePatient(newEntry));
       closeModal();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
