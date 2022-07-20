@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Diagnosis, Entry, EntryType, Patient } from "../types";
+import { Diagnosis, Entry, Patient } from "../types";
 
 export type Action =
   | {
@@ -59,18 +59,19 @@ export const reducer = (state: State, action: Action): State => {
       };
 
     case "SINGLE_PATIENT":
-      const patient = action.payload;
-      const findPatient =
-        state.patientRecords !== null
-          ? state.patientRecords.hasOwnProperty(patient.id)
-          : state.patientRecords;
-      if (!findPatient) {
+      const data = action.payload;
+
+      const findPatient = state.patientRecords;
+      console.log({ findPatient });
+      if (!findPatient || !findPatient.hasOwnProperty(data.id)) {
         return {
           ...state,
-          patientRecords: patient,
+          patientRecords: data,
         };
+      } else {
+        return state;
       }
-      return state;
+
     case "UPDATE_PATIENT":
       const newEntry = action.payload;
       const findEntry = state.patientRecords?.entries?.find(

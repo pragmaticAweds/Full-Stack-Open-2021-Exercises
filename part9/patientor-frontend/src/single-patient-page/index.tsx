@@ -6,14 +6,14 @@ import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
 import { setSinglePatient, updatePatient } from "../state";
-import { Entry, EntryType, NewEntryWithoutId } from "../types";
+import { Entry, NewEntryWithoutId } from "../types";
 import HospitalCheckEntry from "../components/HospitalCheckEntry";
 import OccupationEntryCheck from "../components/OccupationEntryCheck";
 import HealthCheck from "../components/HealthCheckEntry";
 import AddEntryModal from "../AddEntry";
 
 function index(): React.ReactElement {
-  const [{ patientRecords, diagnoses }, dispatch] = useStateValue();
+  const [{ patientRecords }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
@@ -35,8 +35,11 @@ function index(): React.ReactElement {
         console.log(error);
       }
     };
-    fetchSinglePatient();
-  }, [dispatch]);
+
+    if (!patientRecords || patientRecords.id !== id) {
+      fetchSinglePatient();
+    }
+  }, [dispatch, id]);
 
   const submitNewEntry = async (values: NewEntryWithoutId) => {
     const dataToSend = { ...values };
@@ -111,7 +114,9 @@ function index(): React.ReactElement {
             })}
           </div>
         </>
-      ) : null}
+      ) : (
+        <h1>loading</h1>
+      )}
       <AddEntryModal
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}

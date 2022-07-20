@@ -69,7 +69,7 @@ const PatientListPage = () => {
             <TableRow key={patient.id}>
               <TableCell
                 onClick={() => {
-                  dispatch({ type: "SINGLE_PATIENT", payload: patient });
+                  // dispatch({ type: "SINGLE_PATIENT", payload: patient });
                   navigate(`/api/patient/${patient.id}`);
                 }}
               >
