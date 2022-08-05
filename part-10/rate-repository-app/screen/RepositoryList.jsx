@@ -1,5 +1,5 @@
 import { FlatList, View, StyleSheet } from "react-native";
-import RepositoryItem from "./molecules/card";
+import RepositoryItem from "../components/molecules/card";
 
 const styles = StyleSheet.create({
   separator: {

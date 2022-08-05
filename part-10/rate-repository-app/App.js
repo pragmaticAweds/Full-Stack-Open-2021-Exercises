@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import RepositoryList from "./components/RepositoryList";
-import AppBarTab from "./components/AppBarTab";
+import RepositoryList from "./screen/RepositoryList";
+import AppBarTab from "./components/molecules/AppBarTab";
 import theme from "./theme";
 
 export default function App() {
