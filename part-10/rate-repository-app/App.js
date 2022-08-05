@@ -1,11 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import RepositoryList from "./components/RepositoryList";
-import AppBar from "./components/AppBar";
+import AppBarTab from "./components/AppBarTab";
+import theme from "./theme";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppBar />
+      <AppBarTab />
       <View style={styles.container}>
         <RepositoryList />
       </View>
@@ -16,8 +17,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#797979",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: theme.colors.mainBg,
   },
 });

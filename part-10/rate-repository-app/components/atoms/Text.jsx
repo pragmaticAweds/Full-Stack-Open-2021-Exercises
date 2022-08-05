@@ -1,24 +1,24 @@
 import { Text as NativeText, StyleSheet } from "react-native";
 
-import theme from "../theme";
+import theme from "../../theme";
 
 const styles = StyleSheet.create({
   text: {
-    color: theme.colors.textPrimary,
+    color: theme.colors.black,
     fontSize: theme.fontSizes.body,
     fontFamily: theme.fonts.main,
     fontWeight: theme.fontWeights.normal,
   },
-  colorTextSecondary: {
+  secondaryColor: {
     color: theme.colors.textSecondary,
   },
-  colorPrimary: {
+  primaryColor: {
     color: theme.colors.primary,
   },
-  fontSizeSubheading: {
+  subheading: {
     fontSize: theme.fontSizes.subheading,
   },
-  fontWeightBold: {
+  bold: {
     fontWeight: theme.fontWeights.bold,
   },
 });
@@ -26,10 +26,9 @@ const styles = StyleSheet.create({
 const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
   const textStyle = [
     styles.text,
-    color === "textSecondary" && styles.colorTextSecondary,
-    color === "primary" && styles.colorPrimary,
-    fontSize === "subheading" && styles.fontSizeSubheading,
-    fontWeight === "bold" && styles.fontWeightBold,
+    color && styles[color],
+    fontSize && styles[fontSize],
+    fontWeight && styles[fontWeight],
     style,
   ];
 
