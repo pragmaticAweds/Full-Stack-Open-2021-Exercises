@@ -1,22 +1,14 @@
-import { StyleSheet, View } from "react-native";
-import RepositoryList from "./screen/RepositoryList";
-import AppBarTab from "./components/molecules/AppBarTab";
-import theme from "./theme";
+import { NativeRouter } from "react-router-native";
+import { StatusBar } from "expo-status-bar";
+import Main from "./screen/main";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <AppBarTab />
-      <View style={styles.container}>
-        <RepositoryList />
-      </View>
-    </View>
+    <>
+      <NativeRouter>
+        <Main />
+      </NativeRouter>
+      <StatusBar style="auto" />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.mainBg,
-  },
-});
