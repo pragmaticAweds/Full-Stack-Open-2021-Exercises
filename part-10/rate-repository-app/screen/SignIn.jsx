@@ -6,6 +6,7 @@ import Button from "../components/atoms/Button";
 import ScreenView from "../components/atoms/View";
 
 import theme from "../theme";
+import useSignIn from "../hooks/useSignIn";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,8 +16,21 @@ const styles = StyleSheet.create({
 });
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+
   const onSubmit = ({ username, password }, { resetForm }) => {
     console.log(username, password);
+
+      try {
+      const { data } = await signIn({ username, password });
+      console.log({data});
+    } catch (e) {
+      console.log(e);
+    }
+
+
+
+
     resetForm({ username: "", password: "" });
   };
 
