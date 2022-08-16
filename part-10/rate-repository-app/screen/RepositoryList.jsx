@@ -12,10 +12,39 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const renderItem = ({ item }) => <RepositoryItem {...item} />;
 
 const RepositoryList = () => {
-  const { repo } = useRepo();
+  const { data, loading } = useRepo();
+  let repo;
+  if (!loading) {
+    repo = data.repositories.edges.map(
+      ({
+        node: {
+          id,
+          fullName,
+          description,
+          language,
+          forksCount,
+          stargazersCount,
+          ratingAverage,
+          reviewCount,
+          ownerAvatarUrl,
+        },
+      }) => ({
+        id,
+        fullName,
+        description,
+        language,
+        forksCount,
+        stargazersCount,
+        ratingAverage,
+        reviewCount,
+        ownerAvatarUrl,
+      })
+    );
+  }
+
   return (
     <FlatList
-      data={repo}
+      data={!loading ? repo : []}
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={({ id }) => id}
       renderItem={renderItem}

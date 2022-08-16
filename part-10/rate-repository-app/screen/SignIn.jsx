@@ -18,18 +18,12 @@ const styles = StyleSheet.create({
 const SignIn = () => {
   const [signIn] = useSignIn();
 
-  const onSubmit = ({ username, password }, { resetForm }) => {
-    console.log(username, password);
-
-      try {
+  const onSubmit = async ({ username, password }, { resetForm }) => {
+    try {
       const { data } = await signIn({ username, password });
-      console.log({data});
     } catch (e) {
       console.log(e);
     }
-
-
-
 
     resetForm({ username: "", password: "" });
   };

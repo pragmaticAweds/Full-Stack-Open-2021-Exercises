@@ -1,9 +1,16 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Link } from "react-router-native";
 
-import Text from "../atoms/Text";
+import { useQuery } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
+import { ME } from "../../graphql/queries";
 import Constants from "expo-constants";
+
+import AuthStorage from "../../utils/authStorage";
+
+import Text from "../atoms/Text";
 import theme from "../../theme";
+import Button from "../atoms/Button";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +24,14 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const { data } = useQuery(ME);
+  const apolloClient = useApolloClient();
+  const clearTokenFromStorage = new AuthStorage();
+  const handleLogout = () => {
+    clearTokenFromStorage.removeAccessToken();
+    apolloClient.resetStore();
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
@@ -30,16 +45,24 @@ const AppBar = () => {
             Repositories
           </Text>
         </Link>
-        <Link to="/signIn">
-          <Text
-            color="primaryColor"
-            fontSize="subheading"
-            fontWeight="bold"
-            style={styles.spaceRight}
-          >
-            Sign In
-          </Text>
-        </Link>
+        {data?.me === null ? (
+          <Link to="/signIn">
+            <Text
+              color="primaryColor"
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.spaceRight}
+            >
+              Sign In
+            </Text>
+          </Link>
+        ) : (
+          <Button
+            onPress={handleLogout}
+            title="Sign Out"
+            style={{ backgroundColor: "transparent", padding: 0 }}
+          />
+        )}
       </ScrollView>
     </View>
   );
