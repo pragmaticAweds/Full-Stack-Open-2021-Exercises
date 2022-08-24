@@ -15,7 +15,7 @@ const RepositoryList = () => {
   const { data, loading } = useRepo();
   let repo;
   if (!loading) {
-    repo = data.repositories.edges.map(
+    repo = data?.repositories.edges.map(
       ({
         node: {
           id,
