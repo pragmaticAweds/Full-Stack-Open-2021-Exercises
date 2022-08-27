@@ -1,4 +1,7 @@
-import RepositoryList from "../components/molecules/card";
+import { render } from "@testing-library/react-native";
+import { View } from "react-native";
+import RepositoryItem from "../../components/molecules/repo-item";
+import RepositoryList from "../../components/molecules/repo-item";
 
 describe("RepositoryList", () => {
   describe("RepositoryListContainer", () => {
@@ -46,7 +49,32 @@ describe("RepositoryList", () => {
         ],
       };
 
+      const { edges } = repositories;
+
+      const repo1 = edges[0].node;
+
+      const { queryByTestId } = render(<RepositoryItem data={repo1} />);
+
+      const repoImg = queryByTestId("repo-img").props.source.uri;
+      const repoName = queryByTestId("repo-name");
+      const repoDesc = queryByTestId("repo-desc");
+      const repoLang = queryByTestId("repo-lang");
+      const repoStars = queryByTestId("repo-stars");
+      const repoForks = queryByTestId("repo-forks");
+      const repoReviews = queryByTestId("repo-reviews");
+      const repoRating = queryByTestId("repo-rating");
+
       // Add your test code here
+      expect(repoImg).toBe(repo1.ownerAvatarUrl);
+      expect(repoName).toHaveTextContent(repo1.fullName);
+      expect(repoDesc).toHaveTextContent(repo1.description);
+      expect(repoLang).toHaveTextContent(repo1.language);
+      expect(repoStars).toHaveTextContent(
+        (repo1.stargazersCount / 1000).toFixed(1)
+      );
+      expect(repoForks).toHaveTextContent((repo1.forksCount / 1000).toFixed(1));
+      expect(repoRating).toHaveTextContent(repo1.ratingAverage);
+      expect(repoReviews).toHaveTextContent(repo1.reviewCount);
     });
   });
 });

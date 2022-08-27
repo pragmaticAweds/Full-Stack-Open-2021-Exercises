@@ -1,5 +1,5 @@
 import { FlatList, View, StyleSheet } from "react-native";
-import RepositoryItem from "../components/molecules/card";
+import RepositoryItem from "../components/molecules/repo-item";
 import useRepo from "../hooks/useRepo";
 const styles = StyleSheet.create({
   separator: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const renderItem = ({ item }) => <RepositoryItem {...item} />;
+const renderItem = ({ item }) => <RepositoryItem data={item} />;
 
 const RepositoryList = () => {
   const { data, loading } = useRepo();
