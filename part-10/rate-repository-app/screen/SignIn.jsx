@@ -1,19 +1,7 @@
-import { StyleSheet, View } from "react-native";
-import { Formik } from "formik";
 import * as yup from "yup";
-import FormikTextInput from "../components/atoms/FormikTextInput";
-import Button from "../components/atoms/Button";
-import ScreenView from "../components/atoms/View";
 
-import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-    backgroundColor: theme.colors.primary,
-  },
-});
+import Form from "../components/organisms/form";
 
 const SignIn = () => {
   const [signIn] = useSignIn();
@@ -41,32 +29,11 @@ const SignIn = () => {
   });
 
   return (
-    <ScreenView>
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        onSubmit={onSubmit}
-        validationSchema={validateSchema}
-      >
-        {({ handleSubmit }) => (
-          <View style={styles.container}>
-            <FormikTextInput
-              name="username"
-              placeholder="Enter Your Username"
-            />
-            <FormikTextInput
-              name="password"
-              placeholder="Enter your password"
-              style={{ marginTop: 10 }}
-            />
-            <Button
-              onPress={handleSubmit}
-              title="Submit"
-              style={{ marginTop: 10 }}
-            />
-          </View>
-        )}
-      </Formik>
-    </ScreenView>
+    <Form
+      initialValues={{ username: "", password: "" }}
+      validateSchema={validateSchema}
+      onSubmit={onSubmit}
+    />
   );
 };
 

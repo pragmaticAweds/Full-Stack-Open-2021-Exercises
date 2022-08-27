@@ -1,13 +1,23 @@
-const Form = ({ initialValues, onSubmit }) => {
-  const onSubmit = async ({ username, password }, { resetForm }) => {
-    resetForm({ username: "", password: "" });
-  };
+import { Formik } from "formik";
+import ScreenView from "../atoms/View";
+import FormikTextInput from "../atoms/FormikTextInput";
+import Button from "../atoms/Button";
+import { StyleSheet, View } from "react-native";
+import theme from "../../theme";
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+    backgroundColor: theme.colors.primary,
+  },
+});
+const Form = ({ onSubmit, initialValues, validateSchema }) => {
   return (
     <ScreenView>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        // validationSchema={validateSchema}
+        validationSchema={validateSchema}
       >
         {({ handleSubmit }) => (
           <View style={styles.container}>
