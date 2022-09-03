@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Link } from "react-router-native";
+import { Link, useLocation, useMatch, useParams } from "react-router-native";
 
 import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const { data } = useQuery(ME);
   const apolloClient = useApolloClient();
+  const match = useMatch("/repo/:id");
   const clearTokenFromStorage = new AuthStorage();
   const handleLogout = () => {
     clearTokenFromStorage.removeAccessToken();
@@ -45,6 +46,18 @@ const AppBar = () => {
             Repositories
           </Text>
         </Link>
+        {data?.me !== null && match !== null && (
+          <Link to={`/create-review/${match.params.id}`}>
+            <Text
+              color="primaryColor"
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.spaceRight}
+            >
+              Create Review
+            </Text>
+          </Link>
+        )}
         {data?.me === null ? (
           <Link to="/signIn">
             <Text

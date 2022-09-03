@@ -1,6 +1,10 @@
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Pressable } from "react-native";
+import { useNavigate } from "react-router-native";
+import * as Linking from "expo-linking";
 import Text from "../atoms/Text";
 import theme from "../../theme";
+import Button from "../atoms/Button";
+import { ReviewItem } from "./review-item";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +34,7 @@ const styles = StyleSheet.create({
   },
   ratingWrapper: {
     alignItems: "center",
+    marginBottom: 12,
   },
   ratingValue: {
     fontWeight: theme.fontWeights.bold,
@@ -38,7 +43,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ data }) => {
+const RepositoryItem = ({ data, button }) => {
+  const navigate = useNavigate();
+  if (!data || data === undefined) {
+    return (
+      <View>
+        <Text>User does not exist</Text>
+      </View>
+    );
+  }
+
   const {
     fullName,
     description,
@@ -48,10 +62,20 @@ const RepositoryItem = ({ data }) => {
     ratingAverage,
     reviewCount,
     ownerAvatarUrl,
+    id,
+    url,
   } = data;
 
+  const handleNavigateToUser = () => {
+    navigate(`/repo/${id}`);
+  };
+
+  const handleNavigateToGithub = () => {
+    Linking.openURL(url);
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable onPress={handleNavigateToUser} style={styles.container}>
       <View style={styles.head}>
         <View style={styles.avatarContainer}>
           <Image
@@ -94,7 +118,6 @@ const RepositoryItem = ({ data }) => {
           </Text>
         </View>
       </View>
-
       <View style={styles.rating}>
         <View style={styles.ratingWrapper}>
           <Text style={styles.ratingValue} testID="repo-stars">
@@ -121,7 +144,11 @@ const RepositoryItem = ({ data }) => {
           <Text>Rating</Text>
         </View>
       </View>
-    </View>
+      {button && (
+        <Button title="Open in GitHub" onPress={handleNavigateToGithub} />
+      )}
+      <ReviewItem />
+    </Pressable>
   );
 };
 
