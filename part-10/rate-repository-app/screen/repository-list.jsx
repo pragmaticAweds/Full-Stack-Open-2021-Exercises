@@ -45,6 +45,7 @@ const RepositoryList = () => {
     sort: { orderDirection: "DESC", orderBy: "CREATED_AT" },
   });
   const [repoName, setRepoName] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const { data, loading } = useRepo(sortBy.sort);
   let repo;
   if (!loading) {
@@ -74,58 +75,63 @@ const RepositoryList = () => {
       })
     );
   }
-  const onChangeSearch = (query) => setRepoName(query);
+
+  const searchFunction = () => {
+    return (
+      <View style={styles.container}>
+        <SearchBar
+          value={inputValue}
+          onChange={(text) => {
+            setInputValue(text);
+          }}
+        />
+
+        <View>
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            placeholder={{ label: sortBy.label, value: null }}
+            onValueChange={(value) => setSortBy(value)}
+            items={[
+              {
+                label: "Latest repositories",
+                value: {
+                  label: "Latest repositories",
+                  sort: { orderDirection: "DESC", orderBy: "CREATED_AT" },
+                },
+              },
+              {
+                label: "Highest rated repositories",
+                value: {
+                  label: "Highest rated repositories",
+                  sort: { orderDirection: "DESC", orderBy: "RATING_AVERAGE" },
+                },
+              },
+              {
+                label: "Lowest rated repositories",
+                value: {
+                  label: "Lowest rated repositories",
+                  sort: { orderDirection: "ASC", orderBy: "RATING_AVERAGE" },
+                },
+              },
+            ]}
+          />
+
+          <Chevron
+            size={1}
+            style={{ position: "absolute", right: 25, top: 20 }}
+          />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <FlatList
       data={!loading ? repo : []}
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={({ id }) => id}
       renderItem={renderItem}
-      ListHeaderComponent={() => (
-        <View style={styles.container}>
-          <SearchBar value={repoName} onChange={(text) => setRepoName(text)} />
-          {/* <Searchbar
-            placeholder="Search"
-            onChange={onChangeSearch}
-            value={repoName}
-          /> */}
-          <View>
-            <RNPickerSelect
-              style={pickerSelectStyles}
-              placeholder={{ label: sortBy.label, value: null }}
-              onValueChange={(value) => setSortBy(value)}
-              items={[
-                {
-                  label: "Latest repositories",
-                  value: {
-                    label: "Latest repositories",
-                    sort: { orderDirection: "DESC", orderBy: "CREATED_AT" },
-                  },
-                },
-                {
-                  label: "Highest rated repositories",
-                  value: {
-                    label: "Highest rated repositories",
-                    sort: { orderDirection: "DESC", orderBy: "RATING_AVERAGE" },
-                  },
-                },
-                {
-                  label: "Lowest rated repositories",
-                  value: {
-                    label: "Lowest rated repositories",
-                    sort: { orderDirection: "ASC", orderBy: "RATING_AVERAGE" },
-                  },
-                },
-              ]}
-            />
-
-            <Chevron
-              size={1}
-              style={{ position: "absolute", right: 25, top: 20 }}
-            />
-          </View>
-        </View>
-      )}
+      ListHeaderComponent={searchFunction()}
     />
   );
 };

@@ -32,7 +32,6 @@ const Style = StyleSheet.create({
 });
 
 const SearchBar = ({ value, onChange }) => {
-  const [text, setText] = useState("");
   return (
     <View style={Style.wrapper}>
       <View style={Style.search}>
@@ -40,11 +39,11 @@ const SearchBar = ({ value, onChange }) => {
       </View>
       <TextInput
         style={Style.input}
-        defaultValue={value}
-        onChangeText={onChange}
+        value={value}
+        onChangeText={(text) => onChange(text)}
       />
 
-      {text !== "" && (
+      {value !== "" && (
         <View style={Style.close}>
           <CloseIcon onPress={() => console.log("hi")} />
         </View>
