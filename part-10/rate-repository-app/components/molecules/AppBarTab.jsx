@@ -59,7 +59,7 @@ const AppBar = () => {
           </Link>
         )}
         {data?.me === null ? (
-          <Link to="/signIn">
+          <Link to="/sign-in">
             <Text
               color="primaryColor"
               fontSize="subheading"
@@ -76,9 +76,20 @@ const AppBar = () => {
             style={{ backgroundColor: "transparent", padding: 0 }}
           />
         )}
+        {data?.me === null && (
+          <Link to="/sign-up">
+            <Text
+              color="primaryColor"
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.spaceRight}
+            >
+              Sign Up
+            </Text>
+          </Link>
+        )}
       </ScrollView>
     </View>
   );
 };
-
 export default AppBar;

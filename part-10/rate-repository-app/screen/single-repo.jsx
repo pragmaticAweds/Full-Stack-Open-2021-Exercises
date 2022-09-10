@@ -8,10 +8,32 @@ import { GET_SINGLE_REPO } from "../graphql/queries";
 
 export const SingleRepo = () => {
   const { id } = useParams();
-  const { data, loading } = useQuery(GET_SINGLE_REPO, {
+  const { data, loading, fetchMore } = useQuery(GET_SINGLE_REPO, {
     fetchPolicy: "cache-and-network",
-    variables: { repositoryId: id },
+    variables: {
+      repositoryId: id,
+      first: 2,
+    },
   });
+  const handleFetchMore = () => {
+    const canFetchMore =
+      !loading && data?.repository.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+        repositoryId: id,
+        first: 2,
+      },
+    });
+  };
+
+  const onEndReach = () => {
+    handleFetchMore();
+  };
 
   let reviews;
   if (!loading) {
@@ -43,6 +65,8 @@ export const SingleRepo = () => {
         ListHeaderComponent={() => (
           <RepositoryItem data={data.repository} button />
         )}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     )
   );

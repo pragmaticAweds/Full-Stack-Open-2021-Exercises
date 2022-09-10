@@ -3,8 +3,8 @@ import { FlatList, View, StyleSheet } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Chevron } from "react-native-shapes";
 import SearchBar from "../components/atoms/SearchBar";
-import { Searchbar } from "react-native-paper";
 import RepositoryItem from "../components/molecules/repo-item";
+import { useDebounce } from "use-debounce";
 import useRepo from "../hooks/useRepo";
 
 const styles = StyleSheet.create({
@@ -44,12 +44,19 @@ const RepositoryList = () => {
     label: "Latest repositories",
     sort: { orderDirection: "DESC", orderBy: "CREATED_AT" },
   });
-  const [repoName, setRepoName] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const { data, loading } = useRepo(sortBy.sort);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [value] = useDebounce(searchQuery, 500);
+  const { repositories, loading, fetchMore } = useRepo({
+    ...sortBy.sort,
+    searchKeyword: value,
+  });
+  const handleSearchQuery = (text) => {
+    setSearchQuery(text);
+  };
   let repo;
   if (!loading) {
-    repo = data?.repositories.edges.map(
+    repo = repositories.edges.map(
       ({
         node: {
           id,
@@ -79,12 +86,7 @@ const RepositoryList = () => {
   const searchFunction = () => {
     return (
       <View style={styles.container}>
-        <SearchBar
-          value={inputValue}
-          onChange={(text) => {
-            setInputValue(text);
-          }}
-        />
+        <SearchBar value={searchQuery} onChange={handleSearchQuery} />
 
         <View>
           <RNPickerSelect
@@ -125,6 +127,10 @@ const RepositoryList = () => {
     );
   };
 
+  const onEndReach = () => {
+    fetchMore();
+  };
+
   return (
     <FlatList
       data={!loading ? repo : []}
@@ -132,6 +138,8 @@ const RepositoryList = () => {
       keyExtractor={({ id }) => id}
       renderItem={renderItem}
       ListHeaderComponent={searchFunction()}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

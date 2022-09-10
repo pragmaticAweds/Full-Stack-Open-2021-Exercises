@@ -21,7 +21,6 @@ const Style = StyleSheet.create({
     flex: 1,
     padding: 3,
     marginRight: 5,
-    // backgroundColor: "red",
   },
   search: {
     flex: 0.1,
@@ -32,6 +31,7 @@ const Style = StyleSheet.create({
 });
 
 const SearchBar = ({ value, onChange }) => {
+  const searchBar = () => onChange("");
   return (
     <View style={Style.wrapper}>
       <View style={Style.search}>
@@ -45,7 +45,7 @@ const SearchBar = ({ value, onChange }) => {
 
       {value !== "" && (
         <View style={Style.close}>
-          <CloseIcon onPress={() => console.log("hi")} />
+          <CloseIcon onPress={searchBar} />
         </View>
       )}
     </View>
