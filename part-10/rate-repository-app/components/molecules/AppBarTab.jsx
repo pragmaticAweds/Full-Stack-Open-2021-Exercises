@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const { data } = useQuery(ME);
   const apolloClient = useApolloClient();
+  // console.log({ data: data?.me.reviews.edges });
   const match = useMatch("/repo/:id");
   const clearTokenFromStorage = new AuthStorage();
   const handleLogout = () => {
@@ -58,6 +59,18 @@ const AppBar = () => {
             </Text>
           </Link>
         )}
+        {data?.me !== null && (
+          <Link to="/my-reviews">
+            <Text
+              color="primaryColor"
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.spaceRight}
+            >
+              My reviews
+            </Text>
+          </Link>
+        )}
         {data?.me === null ? (
           <Link to="/sign-in">
             <Text
@@ -76,6 +89,7 @@ const AppBar = () => {
             style={{ backgroundColor: "transparent", padding: 0 }}
           />
         )}
+
         {data?.me === null && (
           <Link to="/sign-up">
             <Text

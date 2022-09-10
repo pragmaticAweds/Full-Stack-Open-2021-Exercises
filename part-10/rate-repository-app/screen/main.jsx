@@ -9,6 +9,7 @@ import SignIn from "./sign-in";
 import { SingleRepo } from "./single-repo";
 import CreateReview from "./create-review";
 import SignUp from "./sign-up";
+import { MyReviews } from "./my-reviews";
 
 export default function Main() {
   return (
@@ -19,6 +20,7 @@ export default function Main() {
         <Route path="/repo/:id" element={<SingleRepo />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/my-reviews" element={<MyReviews />} />
         <Route path="/" element={<RepositoryList />} exact />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
